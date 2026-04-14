@@ -1,0 +1,3084 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0d0818">
+  <title>M.A.H.E.S.W.A.R.I — Our Story</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --lav: #c8b4e8;
+      --vio: #9b72cf;
+      --dvio: #6a3fa0;
+      --night: #0d0818;
+      --mid: #160d2e;
+      --gold: #d4a8ff;
+      --shim: #f5e6ff;
+      --tmain: #f0e8ff;
+      --tmut: #b89fd4;
+      --tdim: #7a5fa0;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bot: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      background: var(--night);
+      font-family: 'EB Garamond', serif;
+      color: var(--tmain);
+      overflow-x: hidden;
+      cursor: auto;
+      padding-top: var(--safe-top);
+    }
+
+    /* STARS */
+    #sc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* PETALS */
+    .petal {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      animation: petalFall linear infinite;
+    }
+
+    @keyframes petalFall {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 0
+      }
+
+      10% {
+        opacity: .4
+      }
+
+      90% {
+        opacity: .15
+      }
+
+      100% {
+        transform: translateY(110vh) rotate(720deg) translateX(40px);
+        opacity: 0
+      }
+    }
+
+    /* ===== MUSIC PLAYER — mobile compact ===== */
+    #music-player {
+      position: fixed;
+      bottom: calc(1rem + var(--safe-bot));
+      right: 1rem;
+      z-index: 500;
+      background: rgba(22, 13, 46, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(155, 114, 207, 0.25);
+      border-radius: 40px;
+      padding: .55rem .9rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      box-shadow: 0 4px 30px rgba(106, 63, 160, 0.3);
+      max-width: calc(100vw - 2rem);
+    }
+
+    .music-disc {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(106, 63, 160, 0.4);
+      border: 1px solid rgba(155, 114, 207, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      animation: spinDisc 4s linear infinite;
+      flex-shrink: 0;
+    }
+
+    .music-disc.paused {
+      animation-play-state: paused;
+    }
+
+    @keyframes spinDisc {
+      from {
+        transform: rotate(0deg)
+      }
+
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .music-info {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .music-title {
+      color: var(--lav);
+      font-family: 'Cinzel', serif;
+      font-size: .52rem;
+      letter-spacing: .1em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .music-chap {
+      color: var(--tdim);
+      font-family: 'Cinzel', serif;
+      font-size: .45rem;
+      letter-spacing: .08em;
+      margin-top: .1rem;
+    }
+
+    .music-waves {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .music-waves span {
+      width: 2px;
+      border-radius: 1px;
+      background: var(--vio);
+      animation: wv .8s ease-in-out infinite;
+    }
+
+    .music-waves span:nth-child(1) {
+      height: 5px;
+      animation-delay: 0s
+    }
+
+    .music-waves span:nth-child(2) {
+      height: 10px;
+      animation-delay: .1s
+    }
+
+    .music-waves span:nth-child(3) {
+      height: 14px;
+      animation-delay: .2s
+    }
+
+    .music-waves span:nth-child(4) {
+      height: 8px;
+      animation-delay: .3s
+    }
+
+    .music-waves span:nth-child(5) {
+      height: 11px;
+      animation-delay: .4s
+    }
+
+    .music-waves.paused span {
+      animation-play-state: paused;
+    }
+
+    @keyframes wv {
+
+      0%,
+      100% {
+        transform: scaleY(.3)
+      }
+
+      50% {
+        transform: scaleY(1)
+      }
+    }
+
+    .music-play-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(106, 63, 160, 0.5);
+      border: 1px solid rgba(155, 114, 207, 0.4);
+      color: var(--lav);
+      font-size: .7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ===== ENTRY PAGE ===== */
+    #entry-page {
+      position: fixed;
+      inset: 0;
+      background: var(--night);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem;
+      transition: opacity 1.8s ease, visibility 1.8s ease;
+    }
+
+    #entry-page.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .entry-glow {
+      position: absolute;
+      width: 100vw;
+      height: 100vw;
+      max-width: 500px;
+      max-height: 500px;
+      background: radial-gradient(circle, rgba(155, 114, 207, .15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: .5
+      }
+
+      50% {
+        transform: scale(1.15);
+        opacity: 1
+      }
+    }
+
+    .entry-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .entry-star {
+      font-size: 2rem;
+      color: var(--vio);
+      display: inline-block;
+      margin-bottom: 1.2rem;
+      animation: floatStar 3s ease-in-out infinite;
+    }
+
+    @keyframes floatStar {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg)
+      }
+
+      50% {
+        transform: translateY(-8px) rotate(180deg)
+      }
+    }
+
+    .entry-label {
+      font-family: 'Cinzel', serif;
+      font-size: .65rem;
+      letter-spacing: .35em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      animation: fadeUp 1s ease .3s both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .surprise-line {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 6vw, 1.9rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--shim);
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all .9s ease;
+      margin-bottom: .2rem;
+    }
+
+    .surprise-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .surprise-line.tanglish {
+      font-size: clamp(.9rem, 4vw, 1.15rem);
+      color: var(--lav);
+      font-style: normal;
+    }
+
+    .enter-btn {
+      margin-top: 2.5rem;
+      padding: 1rem 2.5rem;
+      background: transparent;
+      border: 1px solid var(--vio);
+      color: var(--lav);
+      font-family: 'Cinzel', serif;
+      font-size: .72rem;
+      letter-spacing: .2em;
+      cursor: pointer;
+      transition: all .4s ease;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeUp 1s ease 4.2s forwards;
+      -webkit-tap-highlight-color: transparent;
+      border-radius: 2px;
+    }
+
+    .enter-btn:active {
+      background: var(--dvio);
+      color: var(--shim);
+    }
+
+    /* ===== MAIN ===== */
+    #main-site {
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      display: none;
+    }
+
+    #main-site.visible {
+      opacity: 1;
+    }
+
+    /* ===== SECURE LOCK GATE ===== */
+    #lock-gate {
+      position: fixed;
+      inset: 0;
+      background: var(--night);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      transition: opacity 1s ease, visibility 1s ease;
+      overflow-y: auto;
+    }
+
+    #lock-gate.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .lock-layout {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .lock-visual {
+      height: 40vh;
+      position: relative;
+      background: rgba(106, 63, 160, 0.1);
+      overflow: hidden;
+    }
+
+    .lock-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.8;
+    }
+
+    .lock-controls {
+      padding: 2rem 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(to bottom, transparent, var(--night));
+    }
+
+    .lock-rules {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      animation: fadeUp 1s ease both;
+    }
+
+    .rule-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--lav);
+      font-size: 0.75rem;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      text-align: center;
+    }
+
+    .lock-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: var(--tdim);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    .password-display {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(155, 114, 207, 0.4);
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+
+    .dot.active {
+      background: var(--lav);
+      box-shadow: 0 0 10px var(--lav);
+      border-color: var(--lav);
+    }
+
+    /* Decorative ring for mobile */
+    .lock-ring {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border: 1px solid rgba(155, 114, 207, 0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(155, 114, 207, 0.4);
+      z-index: 5;
+    }
+
+    .ring-core {
+      width: 5px;
+      height: 5px;
+      background: var(--lav);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--lav);
+    }
+
+    .dialpad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .dial-btn {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: rgba(155, 114, 207, 0.05);
+      border: 1px solid rgba(155, 114, 207, 0.2);
+      color: var(--tmain);
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .dial-btn:active {
+      background: var(--vio);
+      transform: scale(0.9);
+      box-shadow: 0 0 20px var(--vio);
+    }
+
+    .dial-btn.special {
+      font-size: 0.8rem;
+      background: rgba(155, 114, 207, 0.1);
+    }
+
+    .lock-err {
+      color: #ff4d4d;
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      margin-top: 1rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .lock-err.visible { opacity: 1; }
+
+    /* Shake animation for errors */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .shake { animation: shake 0.4s ease-in-out; }
+
+    /* ===== FEEDBACK HUB ===== */
+    .feedback-hub {
+      padding: 4rem 1.5rem;
+      background: rgba(22, 13, 46, 0.5);
+      border-top: 1px solid rgba(155, 114, 207, 0.1);
+      text-align: center;
+    }
+
+    .feed-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: var(--lav);
+      margin-bottom: 2rem;
+      letter-spacing: 0.1em;
+    }
+
+    .rating-container {
+      margin-bottom: 3rem;
+    }
+
+    .rating-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      color: var(--tdim);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 1rem;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    .star {
+      color: rgba(155, 114, 207, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .star.active {
+      color: var(--gold);
+      filter: drop-shadow(0 0 10px var(--gold));
+    }
+
+    .feedback-form {
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .feed-group {
+      margin-bottom: 2rem;
+    }
+
+    .feed-q {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--shim);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .feed-input {
+      width: 100%;
+      background: rgba(13, 8, 24, 0.6);
+      border: 1px solid rgba(155, 114, 207, 0.3);
+      border-radius: 8px;
+      padding: 1rem;
+      color: var(--tmain);
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .feed-input:focus {
+      border-color: var(--lav);
+    }
+
+    .textarea-container {
+      position: relative;
+    }
+
+    .word-count {
+      position: absolute;
+      bottom: 0.8rem;
+      right: 1rem;
+      font-size: 0.7rem;
+      font-family: 'Cinzel', serif;
+      color: var(--tdim);
+    }
+
+    .word-count.valid { color: var(--gold); }
+
+    .voice-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(155, 114, 207, 0.1);
+      border: 1px solid rgba(155, 114, 207, 0.3);
+      color: var(--lav);
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s;
+    }
+
+    .voice-btn.recording {
+      background: rgba(255, 77, 77, 0.2);
+      border-color: #ff4d4d;
+      color: #ff4d4d;
+      animation: pulseRed 1.5s infinite;
+    }
+
+    @keyframes pulseRed {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .submit-feed {
+      width: 100%;
+      padding: 1.2rem;
+      background: transparent;
+      border: 1px solid var(--vio);
+      color: var(--lav);
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .submit-feed.active {
+      opacity: 1;
+      pointer-events: auto;
+      background: rgba(155, 114, 207, 0.1);
+    }
+
+    .submit-feed.active:active {
+      background: var(--dvio);
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 5rem 1.5rem 4rem;
+      position: relative;
+    }
+
+    .hero-sub {
+      font-family: 'Cinzel', serif;
+      font-size: .6rem;
+      letter-spacing: .45em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 1s ease .3s both;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6.2vw;
+      font-weight: 300;
+      line-height: .9;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.01em;
+      margin: 1.5rem auto;
+      text-shadow: 0 0 40px rgba(212, 168, 255, 0.4);
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Luxury Celestial Aura */
+    .hero-title::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140%;
+      height: 180%;
+      background: radial-gradient(circle, rgba(155, 114, 207, 0.2) 0%, transparent 75%);
+      z-index: -1;
+      filter: blur(30px);
+      animation: bloom 5s ease-in-out infinite;
+    }
+
+    @keyframes bloom {
+      0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+    }
+
+    /* ===== PER-LETTER STAGGERED ENTRANCE ===== */
+    .hero-title span {
+      display: inline-block;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--lav) 0%, #fff 30%, var(--gold) 50%, #fff 70%, var(--lav) 100%);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: 0;
+      animation:
+        letterIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+        liquidShimmer 6s ease-in-out 2s infinite,
+        floatLetter 4s ease-in-out 2s infinite;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    @keyframes letterIn {
+      0%   { opacity: 0;   transform: translateY(50px) scale(0.6) rotateX(40deg); filter: blur(16px); }
+      50%  { opacity: 0.3; filter: blur(4px); }
+      80%  { opacity: 0.85; filter: blur(1px); }
+      100% { opacity: 1;   transform: translateY(0) scale(1) rotateX(0deg); filter: blur(0); }
+    }
+
+    /* Celestial Sparkles */
+    .hero-title span::after {
+      content: '✦';
+      position: absolute;
+      top: -12px;
+      right: -8px;
+      font-size: 10px;
+      -webkit-text-fill-color: #fff;
+      text-shadow: 0 0 10px #fff;
+      opacity: 0;
+      animation: celestialSparkle 4s ease-in-out infinite;
+    }
+
+    @keyframes liquidShimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes celestialSparkle {
+      0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+      30%, 70% { opacity: 0; }
+      50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* Per-letter staggered delays — M(0) A(1) H(2) E(3) S(4) W(5) A(6) R(7) I(8) */
+    .hero-title span:nth-child(1) { animation-delay: 0.1s,  2.1s, 2.1s; }
+    .hero-title span:nth-child(2) { animation-delay: 0.35s, 2.35s, 2.35s; }
+    .hero-title span:nth-child(3) { animation-delay: 0.6s,  2.6s, 2.6s; }
+    .hero-title span:nth-child(4) { animation-delay: 0.85s, 2.85s, 2.85s; }
+    .hero-title span:nth-child(5) { animation-delay: 1.1s,  3.1s, 3.1s; }
+    .hero-title span:nth-child(6) { animation-delay: 1.35s, 3.35s, 3.35s; }
+    .hero-title span:nth-child(7) { animation-delay: 1.6s,  3.6s, 3.6s; }
+    .hero-title span:nth-child(8) { animation-delay: 1.85s, 3.85s, 3.85s; }
+    .hero-title span:nth-child(9) { animation-delay: 2.1s,  4.1s, 4.1s; }
+
+    @keyframes floatLetter {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .hero-title span:active {
+      transform: scale(1.4) rotate(-5deg);
+      filter: drop-shadow(0 0 15px var(--gold));
+      -webkit-text-fill-color: var(--shim);
+    }
+
+    /* ===== CHAPTER GATING ===== */
+    .chapter-gate {
+      display: none;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: gateReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .chapter-gate.visible {
+      display: block;
+    }
+
+    @keyframes gateReveal {
+      0%   { opacity: 0; transform: translateY(40px); filter: blur(6px); }
+      100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
+    }
+
+    /* ===== ANSWERS OVERLAY ===== */
+    #answers-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 8000;
+      background: rgba(8, 4, 20, 0.97);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+
+    #answers-overlay.open {
+      transform: translateX(0);
+    }
+
+    .overlay-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 1.5rem 1rem;
+      border-bottom: 1px solid rgba(155,114,207,0.2);
+      position: sticky;
+      top: 0;
+      background: rgba(8, 4, 20, 0.98);
+      z-index: 1;
+    }
+
+    .overlay-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: var(--tdim);
+      text-transform: uppercase;
+    }
+
+    .overlay-close {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(155,114,207,0.3);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--lav);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .overlay-close:active { background: rgba(155,114,207,0.2); }
+
+    .overlay-body {
+      padding: 2rem 1.5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .overlay-intro {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .overlay-intro h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 8vw, 2.4rem);
+      font-weight: 300;
+      font-style: italic;
+      background: linear-gradient(135deg, var(--lav), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.4rem;
+    }
+
+    .overlay-intro p {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.8rem;
+      color: var(--tdim);
+      letter-spacing: 0.2em;
+      font-style: italic;
+    }
+
+    .ans-card {
+      background: rgba(155,114,207,0.06);
+      border: 1px solid rgba(155,114,207,0.15);
+      border-radius: 16px;
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .ans-card-q {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      color: var(--tdim);
+      text-transform: uppercase;
+    }
+
+    .ans-card-a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 5vw, 1.5rem);
+      font-style: italic;
+      font-weight: 300;
+      background: linear-gradient(90deg, var(--lav), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .ans-card-empty {
+      color: var(--tdim);
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    .overlay-footer {
+      text-align: center;
+      padding: 2rem;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--tdim);
+    }
+
+    .hero-tagline {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: clamp(.9rem, 4vw, 1.1rem);
+      color: var(--tmut);
+      margin-top: 1.2rem;
+      animation: fadeUp 1s ease 1s both;
+      padding: 0 1rem;
+    }
+
+    .hero-date {
+      font-family: 'Cinzel', serif;
+      font-size: .58rem;
+      letter-spacing: .35em;
+      color: var(--tdim);
+      margin-top: .7rem;
+      animation: fadeUp 1s ease 1.3s both;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      animation: fadeUp 1s ease 2s both;
+      color: var(--tdim);
+      font-family: 'Cinzel', serif;
+      font-size: .55rem;
+      letter-spacing: .25em;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 30px;
+      background: linear-gradient(to bottom, transparent, var(--vio));
+      animation: sg 2s ease-in-out infinite;
+    }
+
+    @keyframes sg {
+
+      0%,
+      100% {
+        height: 15px;
+        opacity: .3
+      }
+
+      50% {
+        height: 35px;
+        opacity: 1
+      }
+    }
+
+    /* ===== NAV ===== */
+    #chapters-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 8, 24, .95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(155, 114, 207, .12);
+      padding: .5rem .5rem;
+      display: flex;
+      justify-content: flex-start;
+      gap: .15rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    #chapters-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-letter {
+      font-family: 'Cinzel', serif;
+      font-size: .5rem;
+      letter-spacing: .04em;
+      color: var(--tdim);
+      padding: .28rem .45rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all .3s ease;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-letter.active {
+      color: var(--lav);
+      border-color: rgba(155, 114, 207, .3);
+    }
+
+    /* ===== CHAPTER ===== */
+    .chapter {
+      min-height: 100svh;
+      padding: 5rem 1.5rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chapter:nth-child(even) {
+      background: rgba(22, 13, 46, .35);
+    }
+
+    /* Ghost letter bg */
+    .chapter-letter-bg {
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(8rem, 40vw, 16rem);
+      font-weight: 600;
+      color: rgba(155, 114, 207, .035);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+
+    /* Chapter layout: stacked on mobile */
+    .chapter-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Visual goes ABOVE text on mobile */
+    .chapter-visual {
+      order: -1;
+    }
+
+    .chapter-number {
+      font-family: 'Cinzel', serif;
+      font-size: .52rem;
+      letter-spacing: .38em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+
+    .chapter-letter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 14vw, 4.5rem);
+      font-weight: 300;
+      color: var(--vio);
+      line-height: 1;
+      margin-bottom: .35rem;
+    }
+
+    .chapter-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 5.5vw, 1.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--shim);
+      margin-bottom: .8rem;
+      line-height: 1.3;
+    }
+
+    .chapter-mood {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      font-family: 'Cinzel', serif;
+      font-size: .5rem;
+      letter-spacing: .18em;
+      color: var(--tdim);
+      border: 1px solid rgba(155, 114, 207, .17);
+      padding: .25rem .6rem;
+      margin-bottom: 1.4rem;
+      text-transform: uppercase;
+    }
+
+    .chapter-story {
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      line-height: 1.95;
+      color: var(--tmut);
+    }
+
+    .chapter-story p {
+      margin-bottom: .9rem;
+    }
+
+    .chapter-story .hi {
+      color: var(--lav);
+      font-style: italic;
+    }
+
+    .chapter-story .mo {
+      color: var(--shim);
+    }
+
+    .chapter-story .so {
+      color: var(--tdim);
+      font-style: italic;
+      font-size: .93rem;
+    }
+
+    .chapter-quote {
+      margin-top: 1.5rem;
+      padding: .9rem 1.1rem;
+      border-left: 2px solid var(--dvio);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--gold);
+      line-height: 1.65;
+      background: rgba(106, 63, 160, .07);
+    }
+
+    /* mood accent */
+    .chapter[data-mood="love"] .chapter-letter {
+      color: #e8a0d0;
+    }
+
+    .chapter[data-mood="laugh"] .chapter-letter {
+      color: #a0d4e8;
+    }
+
+    .chapter[data-mood="hold"] .chapter-letter {
+      color: #c8b4e8;
+    }
+
+    .chapter[data-mood="forever"] .chapter-letter {
+      color: #d4a8ff;
+    }
+
+    .chapter[data-mood="storm"] .chapter-letter {
+      color: #8090b8;
+    }
+
+    .chapter[data-mood="wound"] .chapter-letter {
+      color: #c87070;
+    }
+
+    .chapter[data-mood="apart"] .chapter-letter {
+      color: #7a8aaa;
+    }
+
+    .chapter[data-mood="return"] .chapter-letter {
+      color: #b8d090;
+    }
+
+    .chapter[data-mood="infinity"] .chapter-letter {
+      color: #f5d77a;
+    }
+
+    /* ===== PHOTO FRAME — mobile ===== */
+    .photo-frame {
+      position: relative;
+      aspect-ratio: 4/3;
+      border: 1px solid rgba(155, 114, 207, .22);
+      background: rgba(22, 13, 46, .5);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border-radius: 2px;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      opacity: .85;
+    }
+
+    .photo-placeholder {
+      text-align: center;
+      padding: 1.5rem;
+      z-index: 2;
+      position: relative;
+    }
+
+    .ph-icon {
+      font-size: 1.8rem;
+      margin-bottom: .5rem;
+      opacity: .3;
+    }
+
+    .photo-placeholder p {
+      font-family: 'Cinzel', serif;
+      font-size: .5rem;
+      letter-spacing: .22em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      line-height: 1.8;
+    }
+
+    .frame-corner {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--vio);
+      border-style: solid;
+      opacity: .28;
+    }
+
+    .frame-corner.tl {
+      top: 6px;
+      left: 6px;
+      border-width: 1px 0 0 1px;
+    }
+
+    .frame-corner.tr {
+      top: 6px;
+      right: 6px;
+      border-width: 1px 1px 0 0;
+    }
+
+    .frame-corner.bl {
+      bottom: 6px;
+      left: 6px;
+      border-width: 0 0 1px 1px;
+    }
+
+    .frame-corner.br {
+      bottom: 6px;
+      right: 6px;
+      border-width: 0 1px 1px 0;
+    }
+
+    .memory-tag {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(13, 8, 24, .82);
+      backdrop-filter: blur(6px);
+      padding: .55rem .8rem;
+      font-family: 'Cinzel', serif;
+      font-size: .48rem;
+      letter-spacing: .18em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      z-index: 3;
+      border-top: 1px solid rgba(155, 114, 207, .12);
+      text-align: center;
+    }
+
+    /* DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 1.5rem;
+      gap: .8rem;
+      opacity: .2;
+    }
+
+    .divider-line {
+      flex: 1;
+      max-width: 80px;
+      height: 1px;
+      background: var(--vio);
+    }
+
+    .divider-symbol {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .9rem;
+      color: var(--vio);
+    }
+
+    /* ===== QUESTION CARD — mobile ===== */
+    .question-card-wrap {
+      max-width: 480px;
+      margin: 0 auto 3rem;
+      padding: 0 1.5rem;
+    }
+
+    .question-card {
+      background: rgba(22, 13, 46, .75);
+      border: 1px solid rgba(155, 114, 207, .25);
+      padding: 1.8rem 1.4rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .4s;
+      border-radius: 2px;
+    }
+
+    .question-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--vio), transparent);
+      background-size: 200% 100%;
+      animation: shimLine 3s linear infinite;
+    }
+
+    @keyframes shimLine {
+      0% {
+        background-position: -200% 0
+      }
+
+      100% {
+        background-position: 200% 0
+      }
+    }
+
+    .qcard-label {
+      font-family: 'Cinzel', serif;
+      font-size: .5rem;
+      letter-spacing: .32em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      margin-bottom: .8rem;
+    }
+
+    .qcard-q {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 5vw, 1.45rem);
+      font-style: italic;
+      color: var(--shim);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .qcard-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+
+    /* Touch-friendly buttons */
+    .qcard-btn {
+      font-family: 'Cinzel', serif;
+      font-size: .58rem;
+      letter-spacing: .1em;
+      padding: .7rem 1rem;
+      min-height: 44px;
+      background: transparent;
+      border: 1px solid rgba(155, 114, 207, .3);
+      color: var(--tmut);
+      cursor: pointer;
+      transition: all .25s ease;
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+      flex: 1;
+      min-width: calc(50% - .3rem);
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .qcard-btn:active {
+      background: var(--dvio);
+      color: var(--shim);
+      border-color: var(--lav);
+    }
+
+    .qcard-btn.selected {
+      background: var(--dvio);
+      border-color: var(--lav);
+      color: var(--shim);
+    }
+
+    .qcard-btn.disabled {
+      opacity: .4;
+      pointer-events: none;
+    }
+
+    /* Image option buttons */
+    .qcard-img-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      font-family: 'Cinzel', serif;
+      font-size: .5rem;
+      letter-spacing: .1em;
+      padding: .9rem .8rem;
+      min-height: 70px;
+      background: transparent;
+      border: 1px solid rgba(155, 114, 207, .25);
+      color: var(--tmut);
+      cursor: pointer;
+      transition: all .25s ease;
+      flex: 1;
+      min-width: calc(33% - .4rem);
+      text-align: center;
+      border-radius: 2px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .qcard-img-btn .qi {
+      font-size: 1.4rem;
+      opacity: .6;
+    }
+
+    .qcard-img-btn:active,
+    .qcard-img-btn.selected {
+      border-color: var(--lav);
+      background: rgba(106, 63, 160, .3);
+      color: var(--shim);
+    }
+
+    .qcard-img-btn.selected .qi {
+      opacity: 1;
+    }
+
+    .qcard-img-btn.disabled {
+      opacity: .4;
+      pointer-events: none;
+    }
+
+    /* Gift Image Buttons */
+    .qcard-gift-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .8rem;
+      margin-bottom: 2rem;
+    }
+
+    .qcard-gift-btn {
+      background: rgba(22, 13, 46, .4);
+      border: 1px solid rgba(155, 114, 207, .2);
+      border-radius: 8px;
+      padding: .4rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all .25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gift-img-box {
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: .6rem;
+      background: rgba(0,0,0,.2);
+    }
+
+    .gift-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .8;
+      transition: opacity .3s, transform .5s;
+    }
+
+    .gift-label {
+      font-family: 'Cinzel', serif;
+      font-size: .45rem;
+      letter-spacing: .1em;
+      color: var(--tmut);
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .qcard-gift-btn:active,
+    .qcard-gift-btn.selected {
+      border-color: var(--lav);
+      background: rgba(106, 63, 160, .2);
+      transform: scale(0.96);
+    }
+
+    .qcard-gift-btn.selected .gift-img-box img {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .qcard-gift-btn.selected .gift-label {
+      color: var(--gold);
+    }
+
+    /* answered */
+    .qcard-answered {
+      display: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--gold);
+      text-align: center;
+      padding: .8rem 0;
+      animation: fadeUp .6s ease forwards;
+    }
+
+    .qcard.done .qcard-options {
+      display: none;
+    }
+
+    .qcard.done .qcard-answered {
+      display: block;
+    }
+
+    .qcard.done {
+      border-color: rgba(155, 114, 207, .5);
+    }
+
+    /* lock overlay */
+    .qcard-lock {
+      position: absolute;
+      inset: 0;
+      background: rgba(13, 8, 24, .88);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: .6rem;
+      font-family: 'Cinzel', serif;
+      font-size: .58rem;
+      letter-spacing: .18em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      backdrop-filter: blur(4px);
+      transition: opacity .5s;
+      border-radius: 2px;
+    }
+
+    .qcard-lock.unlocked {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .lock-icon {
+      font-size: 1.3rem;
+      opacity: .4;
+    }
+
+    /* ===== ANSWERS SUMMARY ===== */
+    #answers-summary {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      display: none;
+    }
+
+    .summary-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 7vw, 2rem);
+      font-style: italic;
+      color: var(--shim);
+      text-align: center;
+      margin-bottom: .4rem;
+    }
+
+    .summary-sub {
+      font-family: 'Cinzel', serif;
+      font-size: .55rem;
+      letter-spacing: .25em;
+      color: var(--tdim);
+      text-align: center;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: .8rem;
+    }
+
+    .summary-item {
+      background: rgba(22, 13, 46, .6);
+      border: 1px solid rgba(155, 114, 207, .18);
+      padding: 1rem 1.2rem;
+      border-radius: 2px;
+    }
+
+    .summary-item .sq {
+      font-family: 'Cinzel', serif;
+      font-size: .5rem;
+      letter-spacing: .14em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      margin-bottom: .35rem;
+    }
+
+    .summary-item .sa {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .98rem;
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    /* ===== GALLERY — mobile ===== */
+    #gallery {
+      padding: 4rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-header {
+      text-align: center;
+      padding: 0 1.5rem 2.5rem;
+    }
+
+    .gallery-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 8vw, 2.4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--shim);
+    }
+
+    .gallery-sub {
+      font-family: 'Cinzel', serif;
+      font-size: .55rem;
+      letter-spacing: .35em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      margin-top: .4rem;
+    }
+
+    .slideshow-wrap {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .slideshow-track {
+      display: flex;
+      gap: .7rem;
+      animation: slideAuto 60s linear infinite;
+      width: max-content;
+      padding: .7rem 0;
+    }
+
+    .slideshow-track:active {
+      animation-play-state: paused;
+    }
+
+    @keyframes slideAuto {
+      0% {
+        transform: translateX(0)
+      }
+
+      100% {
+        transform: translateX(-50%)
+      }
+    }
+
+    .slide-item {
+      width: 150px;
+      height: 200px;
+      flex-shrink: 0;
+      border: 1px solid rgba(155, 114, 207, .2);
+      overflow: hidden;
+      position: relative;
+      background: rgba(22, 13, 46, .5);
+      border-radius: 2px;
+    }
+
+    .slide-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: .4rem;
+    }
+
+    .slide-placeholder .spi {
+      font-size: 1.6rem;
+      opacity: .2;
+    }
+
+    .slide-placeholder span {
+      font-family: 'Cinzel', serif;
+      font-size: .45rem;
+      letter-spacing: .18em;
+      color: var(--tdim);
+      text-transform: uppercase;
+    }
+
+    .slide-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(13, 8, 24, .85);
+      padding: .45rem .6rem;
+      font-family: 'Cinzel', serif;
+      font-size: .44rem;
+      letter-spacing: .15em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    /* ===== EPILOGUE ===== */
+    #epilogue {
+      min-height: 70svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 5rem 1.5rem calc(5rem + var(--safe-bot));
+      position: relative;
+    }
+
+    .epilogue-glow {
+      position: absolute;
+      width: 80vw;
+      height: 80vw;
+      max-width: 400px;
+      max-height: 400px;
+      background: radial-gradient(circle, rgba(155, 114, 207, .1) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: pulse 5s ease-in-out infinite;
+    }
+
+    .epilogue-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 8vw, 2.8rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--shim);
+      margin-bottom: 1.8rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .epilogue-text {
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      line-height: 2;
+      color: var(--tmut);
+      position: relative;
+      z-index: 2;
+    }
+
+    .epilogue-text em {
+      color: var(--lav);
+      font-style: italic;
+    }
+
+    .epilogue-names {
+      margin-top: 2.5rem;
+      font-family: 'Cinzel', serif;
+      font-size: .82rem;
+      letter-spacing: .25em;
+      color: var(--lav);
+      position: relative;
+      z-index: 2;
+    }
+
+    .heart-beat {
+      display: inline-block;
+      color: var(--gold);
+      animation: hb 1.5s ease-in-out infinite;
+    }
+
+    @keyframes hb {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      14% {
+        transform: scale(1.3)
+      }
+
+      28% {
+        transform: scale(1)
+      }
+
+      42% {
+        transform: scale(1.2)
+      }
+
+      56% {
+        transform: scale(1)
+      }
+    }
+
+    /* ===== CHAPTER PROGRESS BAR ===== */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--dvio), var(--lav));
+      z-index: 200;
+      width: 0%;
+      transition: width .3s ease;
+      box-shadow: 0 0 8px rgba(155, 114, 207, .5);
+    }
+
+    /* ===== SCROLL REVEAL ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: all .85s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-28px);
+      transition: all .85s ease;
+    }
+
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(28px);
+      transition: all .85s ease;
+    }
+
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ===== SWIPE CHAPTER HINT ===== */
+    .swipe-hint {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Cinzel', serif;
+      font-size: .48rem;
+      letter-spacing: .2em;
+      color: var(--tdim);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      animation: fadeUp 1s ease 1s both;
+      opacity: .6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="sc"></canvas>
+  <div id="progress-bar"></div>
+  <div id="petals"></div>
+
+  <!-- MUSIC PLAYER -->
+  <div id="music-player">
+    <div class="music-disc" id="mdisc">♪</div>
+    <div class="music-info">
+      <div class="music-title" id="mtitle">Add songs later...</div>
+      <div class="music-chap" id="mchap">Chapter I — Making</div>
+    </div>
+    <div class="music-waves" id="mwaves">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="music-play-btn" id="mplay" onclick="toggleMusic()">▶</div>
+  </div>
+
+  <!-- SECURE LOCK GATE -->
+  <div id="lock-gate">
+    <div class="lock-layout">
+      <div class="lock-visual">
+        <img src="M-ui/d/Young man waving with a smile.png" alt="Welcome">
+        <div class="lock-ring" style="top:32%; left:40%;">
+          <div class="ring-core"></div>
+        </div>
+      </div>
+      <div class="lock-controls">
+        <div class="lock-rules">
+          <div class="rule-item">
+            <span>Set your earphones 🎧</span>
+          </div>
+          <div class="rule-item">
+            <span>Watch and read it in private 🤫</span>
+          </div>
+        </div>
+
+        <div class="lock-title">VERIFICATION REQUIRED ✦</div>
+        <div class="password-display" id="pass-display">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+
+        <div class="dialpad">
+          <div class="dial-btn" onclick="dial(1)">1</div>
+          <div class="dial-btn" onclick="dial(2)">2</div>
+          <div class="dial-btn" onclick="dial(3)">3</div>
+          <div class="dial-btn" onclick="dial(4)">4</div>
+          <div class="dial-btn" onclick="dial(5)">5</div>
+          <div class="dial-btn" onclick="dial(6)">6</div>
+          <div class="dial-btn" onclick="dial(7)">7</div>
+          <div class="dial-btn" onclick="dial(8)">8</div>
+          <div class="dial-btn" onclick="dial(9)">9</div>
+          <div class="dial-btn special" onclick="dial('clear')">CLEAR</div>
+          <div class="dial-btn" onclick="dial(0)">0</div>
+          <div class="dial-btn special" onclick="dial('verify')">BEGIN ✦</div>
+        </div>
+        <div class="lock-err" id="lock-err">Invalid Passcode. Access Denied.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRY PAGE (MESSAGES PHASE) -->
+  <div id="entry-page" class="hidden">
+    <div class="entry-glow"></div>
+    <div class="entry-content">
+      <div class="entry-star">✦</div>
+      <p class="entry-label">For someone who deserves the whole universe 🌌</p>
+      <p class="surprise-line" id="sl1">Oru chinna surprise iruku... 🎁</p>
+      <p class="surprise-line tanglish" id="sl2">Idhu just a website illa — 🎞️</p>
+      <p class="surprise-line" id="sl3">This is our entire story, written with love ✍️❤️</p>
+      <p class="surprise-line tanglish" id="sl4">Happy Birthday, Maheswari 🌸🎂</p>
+      <button class="enter-btn" onclick="enterSite()">Begin Our Story ✦</button>
+    </div>
+  </div>
+
+  <!-- MAIN SITE -->
+  <div id="main-site">
+
+    <!-- HERO -->
+    <section id="hero">
+      <p class="hero-sub">A love story in nine letters</p>
+      <h1 class="hero-title">
+        <span>M</span><span>A</span><span>H</span><span>E</span><span>S</span><span>W</span><span>A</span><span>R</span><span>I</span>
+      </h1>
+      <p class="hero-tagline">Nine chapters. One heart. Our story — forever.</p>
+      <p class="hero-date">RPSIT · Feb 14, 2024 · Always</p>
+      <div class="scroll-hint">
+        <span>Scroll to begin</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- NAV -->
+    <nav id="chapters-nav">
+      <a href="#ch-m" class="nav-letter">M</a>
+      <a href="#ch-a" class="nav-letter">A</a>
+      <a href="#ch-h" class="nav-letter">H</a>
+      <a href="#ch-e" class="nav-letter">E</a>
+      <a href="#ch-s" class="nav-letter">S</a>
+      <a href="#ch-w" class="nav-letter">W</a>
+      <a href="#ch-a2" class="nav-letter">A</a>
+      <a href="#ch-r" class="nav-letter">R</a>
+      <a href="#ch-i" class="nav-letter">I</a>
+    </nav>
+
+    <!-- ===== CHAPTER M ===== -->
+    <section class="chapter" id="ch-m" data-chapter="0" data-mood="love">
+      <div class="chapter-letter-bg">M</div>
+      <div class="chapter-inner">
+        <div class="chapter-visual reveal">
+          <div class="photo-frame">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+            <img src="M-ui/spl/1.jpg" alt="Chapter I Visual">
+            <div class="memory-tag">First Glance · 2023</div>
+          </div>
+        </div>
+        <div class="chapter-text reveal">
+          <p class="chapter-number">Chapter I · RPSIT College · The Beginning</p>
+          <div class="chapter-letter">M</div>
+          <h2 class="chapter-title">Making My First Glance at You</h2>
+          <span class="chapter-mood">✦ First Encounter · Unexpected</span>
+          <div class="chapter-story">
+            <p>Yes, Namma First meet indha College RPSIT Its an unexpected nu sollalamaa...? en na Adhu kapro nadandha visiyam, Namma pathuruka koodadhu, pathurandhalum  pesiruka koodadhu, pesirundhalum limit oda irundhurukanum</p>
+            <p>clg First 2-3 weeks en kannulaye padadha indha ponnu epdraaa enkitaa pesuunaa... ivan ponnunga kitaaye pesamatan</p>
+            <p>Namma thodakame oru chinna sandaii kutty sorry oda, lab la nadandha andha incident But enaku konja bayam, epdi da pesusradhu hurt panra mari pesiten, how it could be? but You accepted my sorry</p>
+            <p>And then daily Una class la gavanichite unaiyaa okandhu nalla sight adhichiruken. Apo nee enaku thaniyaa therinja. I didn't know you'd become my favourite chapter. But something in my chest already knew — this person matters.</p>
+          </div>
+          <div class="chapter-quote">"I didn't know you'd become my favourite chapter — but something in my chest already knew, this person matters."</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q1 -->
+    <div class="question-card-wrap">
+      <div class="question-card qcard" id="qcard-1">
+        <div class="qcard-lock" id="qlock-1">
+          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+        </div>
+        <p class="qcard-label">✦ For Maheswari · Chapter I</p>
+        <p class="qcard-q">unaku enkita pudichadhu More than my eyes?</p>
+        <div class="qcard-options">
+          <button class="qcard-btn" onclick="answerQ(1,'Hair 💜')">Hair 💜</button>
+          <button class="qcard-btn" onclick="answerQ(1,'Lips 💋')">Lips 💋</button>
+          <button class="qcard-btn" onclick="answerQ(1,'cheeks 🌸')">cheeks 🌸</button>
+          <button class="qcard-btn" onclick="answerQ(1,'Beard 🖤')">Beard 🖤</button>
+        </div>
+        <div class="qcard-answered" id="qans-1"></div>
+      </div>
+    </div>
+
+    <!-- GATE 2: Chapter A + Q2 + divider (revealed after Q1) -->
+    <div class="chapter-gate" id="gate-2">
+
+    <div class="divider">
+      <div class="divider-line"></div><span class="divider-symbol">✦</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- ===== CHAPTER A ===== -->
+    <section class="chapter" id="ch-a" data-chapter="1" data-mood="laugh">
+      <div class="chapter-letter-bg">A</div>
+      <div class="chapter-inner">
+        <div class="chapter-visual reveal">
+          <div class="photo-frame">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+            <img src="M-ui/spl/2.jpg" alt="Chapter II Visual">
+            <div class="memory-tag">Laughter · Always</div>
+          </div>
+        </div>
+        <div class="chapter-text reveal">
+          <p class="chapter-number">Chapter II · Friendship · The Mall · Laughter</p>
+          <div class="chapter-letter">A</div>
+          <h2 class="chapter-title">Always Laughing Like the World Was Ours</h2>
+          <span class="chapter-mood">☀ Sirippu · Classmates · Pure Joy</span>
+          <div class="chapter-story">
+            <p>This chapter about Ennaiya sirika vechiruka paithiyam mari, Before I've seen this before Neraiya Phone ah paathu text panitu sirichitu irupanga. Idhe nee enaku panirukaa most of the times.</p>
+            <p>Class la nee oru mari 2sec paathutu siripaa Adhu ipo kooda inum maarala, that is something. And nee cringe thanama neraiya comedy panuva chatting la, Aana nalla loosu mari siripa</p>
+            <p>Mall la,Un kaal vilundhadhu(but idhu na en pannanum - A man's egos lost in your eyes). Apo nee sirichaa(but enaku apo unaiya Hug pannumnu thonichuu..)</p>
+            <p>Nee epovum sirichitu irukanum That is what i want</p>
+          </div>
+          <div class="chapter-quote">"Nee epovum sirichitu irukanum That is what i want"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q2 -->
+    <div class="question-card-wrap">
+      <div class="question-card qcard" id="qcard-2">
+        <div class="qcard-lock" id="qlock-2">
+          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+        </div>
+        <p class="qcard-label">✦ For Maheswari · Chapter II</p>
+        <p class="qcard-q">Unaku enaiya Hug pannanuma?</p>
+        <div class="qcard-options">
+          <button class="qcard-btn" onclick="answerQ(2,'Yes — definitely 🤗')">Yes — definitely 🤗</button>
+          <button class="qcard-btn" onclick="answerQ(2,'No 🙈')">No 🙈</button>
+        </div>
+        <div class="qcard-answered" id="qans-2"></div>
+      </div>
+    </div>
+
+    </div><!-- /gate-2 -->
+
+    <!-- GATE 3: Chapter H (revealed after Q2) -->
+    <div class="chapter-gate" id="gate-3">
+
+    <div class="divider">
+      <div class="divider-line"></div><span class="divider-symbol">✦</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- ===== CHAPTER H ===== -->
+    <section class="chapter" id="ch-h" data-chapter="2" data-mood="hold">
+      <div class="chapter-letter-bg">H</div>
+      <div class="chapter-inner">
+        <div class="chapter-visual reveal">
+          <div class="photo-frame">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+            <img src="M-ui/spl/3.jpg" alt="Chapter III Visual">
+            <div class="memory-tag">Soft · Unsaid · Beautiful</div>
+          </div>
+        </div>
+        <div class="chapter-text reveal">
+          <p class="chapter-number">Chapter III · Friend to Something More</p>
+          <div class="chapter-letter">H</div>
+          <h2 class="chapter-title">Holding Feelings I Couldn't Say Aloud</h2>
+          <span class="chapter-mood">🤍 Unsaid Words · Kai · Beautiful</span>
+          <div class="chapter-story">
+            <p>Oru friend ah irundhu konjaa heart crush aaye Lovee ah maarunadhu, indha feel enakuu romba vandhadhu Namma bus la travel pannumbothu unnoda kai ah first time thotta, pudhichita, Holded Tightly - Apo thonunadhu Un kai aah vida koodadhunu</p>
+            <p>Una saree la paakum bothuu Its nothing to say, its perfect(and adhu innoru beautiful moment Namma first time </p>
+            <p>But Enaaiya force panii dii solla vechadhuu, un chellama ma.. nu koopudradhu, Aproo nicknames Mahi.., Kolandha, Ammu, Bun uhh, Thakkali, thoppa kutty, koranguu, Na unakaga neraiya nickname vechirukaa in the top of the list Kolandha di nee..</p>
+            <p>Mall la namma onna ice cream saptuu unnoda last tip of cone na sapudradhu, its kind of lovee</p>
+            <p>But sometimes we doesn't know what will happen in future</p>
+          </div>
+          <div class="chapter-quote">"Un kai aah vida koodadhunu thonunadhu"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q3 -->
+    <div class="question-card-wrap">
+      <div class="question-card qcard" id="qcard-3">
+        <div class="qcard-lock" id="qlock-3">
+          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+        </div>
+        <p class="qcard-label">✦ For Maheswari · Chapter III</p>
+        <p class="qcard-q">Nee en kaiya pudichirudhapo unnoda feeling _______</p>
+        <div class="qcard-options">
+          <button class="qcard-btn" onclick="answerQ(3,'Safe & Warm 🤍')">Safe &amp; Warm 🤍</button>
+          <button class="qcard-btn" onclick="answerQ(3,'Butterflies 🦋')">Butterflies 🦋</button>
+          <button class="qcard-btn" onclick="answerQ(3,'Didn\'t want to let go 💜')">Didn't want to let go 💜</button>
+          <button class="qcard-btn" onclick="answerQ(3,'Just happiness 🌸')">Just happiness 🌸</button>
+        </div>
+        <div class="qcard-answered" id="qans-3"></div>
+      </div>
+    </div>
+
+    </div><!-- /gate-3 -->
+
+    <!-- GATE 4: Chapter E (revealed after Q3) -->
+    <div class="chapter-gate" id="gate-4">
+
+    <div class="divider">
+      <div class="divider-line"></div><span class="divider-symbol">✦</span>
+      <div class="divider-line"></div>
+    </div>
+
+
+    <section class="chapter" id="ch-e" data-chapter="3" data-mood="forever">
+      <div class="chapter-letter-bg">E</div>
+      <div class="chapter-inner">
+        <div class="chapter-visual reveal">
+          <div class="photo-frame">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+            <img src="M-ui/spl/4.jpg" alt="Chapter IV Visual">
+            <div class="memory-tag">Love Begins · Valentine's Day 2024</div>
+          </div>
+        </div>
+        <div class="chapter-text reveal">
+          <p class="chapter-number">Chapter IV · Feb 14, 2024 · Ammu Era</p>
+          <div class="chapter-letter">E</div>
+          <h2 class="chapter-title">Every Day Felt Like the Beginning of Forever</h2>
+          <span class="chapter-mood">💜 Love Starts · Valentine's · My Ammu</span>
+          <div class="chapter-story">
+            <p>This chapter turns Maheswari to My Ammu...</p>
+            <p>But indha love starts from oru video call, I think unaku nyabagam irukumnu nenaikuren(Na aniku un kita kiss pannuviya nu ketadhu , nee adhuku oru mari reaction pannitu Aama nu sonnadhu). So lovely moment</p>
+            <p>So Namma love confess panna day Feb 14, 2024 You told about your past, and shared my past and that brings the trust about you is quiet beautiful about LOVE and That is very Memorable moment of the day, of the month, of the year </p>
+            <p>Namma love panna start pannadhu kaproo enakuu pudicha days ah irundhadhu, Maybe Unakum irundhurukalam</p>
+            <p>Unnoda love language kannalaye enaaiya mayakiruva. so na unkita nerla adhigama kedaiyadhu unaiya paatha kooda enaku thitaa manasu varadhu.</p>
+            <p>Video calls, Silent calls, Virtual kisses, Live shows</p>
+            <p>Enaku romba favourite part in this chapter was Nee enaiya Mamaaa.. nu kupudradhu Na unnaiya Pondatii nu solradhuu... Na unmaiya Kalyanam panlanalum Nammalae Apdi irundhadhu. Enaku unnaiiyaa mari oru kolandha venumnu aasapatadhuu... Idhu la romba enaku pudichirundhadhu</p>
+            <p>Na unakagaa panna chinna chinna visiyangal(like small gifts), some of our talks. Daily kuutyy sandaii, but ena dha sanda potalum Na unaa Samadhanam panna try paniruken cause Thoonguradhuku munnadi sandhosama thoonganum</p>
+            <p>And many sweetful memories, enaku late night chats, laughs, fights, love, romance and more...</p>
+            <p>Namma romantic chats is quite beautiful(Unakku puriyum dii..)</p>
+          </div>
+          <div class="chapter-quote">"Namma romantic chats is quite beautiful"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q4 -->
+    <div class="question-card-wrap">
+      <div class="question-card qcard" id="qcard-4">
+        <div class="qcard-lock" id="qlock-4">
+          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+        </div>
+        <p class="qcard-label">✦ For Maheswari · Chapter IV</p>
+        <p class="qcard-q">Na unaku vechaa nickname ur favourite?</p>
+        <div class="qcard-options">
+          <button class="qcard-btn" onclick="answerQ(4,'Bun uh 🍞')">Bun uh 🍞</button>
+          <button class="qcard-btn" onclick="answerQ(4,'Ammu 💜')">Ammu 💜</button>
+          <button class="qcard-btn" onclick="answerQ(4,'kolandha 👶')">kolandha 👶</button>
+          <button class="qcard-btn" onclick="answerQ(4,'Mahi 🌸')">Mahi 🌸</button>
+        </div>
+        <div class="qcard-answered" id="qans-4"></div>
+      </div>
+    </div>
+
+    </div><!-- /gate-4 -->
+
+    <!-- GATE 5: Chapter S (revealed after Q4) -->
+    <div class="chapter-gate" id="gate-5">
+
+    <div class="divider">
+      <div class="divider-line"></div><span class="divider-symbol">✦</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- ===== CHAPTER S ===== -->
+    <section class="chapter" id="ch-s" data-chapter="4" data-mood="storm">
+      <div class="chapter-letter-bg">S</div>
+      <div class="chapter-inner">
+        <div class="chapter-visual reveal">
+          <div class="photo-frame">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+            <img src="M-ui/spl/5.jpg" alt="Chapter V Visual">
+            <div class="memory-tag">Real Love · The Hard Pages</div>
+          </div>
+        </div>
+        <div class="chapter-text reveal">
+          <p class="chapter-number">Chapter V · The Hard Pages · Fights</p>
+          <div class="chapter-letter">S</div>
+          <h2 class="chapter-title">Storms We Walked Into Without Knowing</h2>
+          <span class="chapter-mood">🌧 Sandai · Breaking Points · Real Love</span>
+          <div class="chapter-story">
+            <p>Ella page um romba happy ah irukadhu la, Adhe mari namakula neraiya sandaii. Namma endha alavuku love pannomo adhe alavuku neraiya sandaii dha potrukom, But andha sandai elamm ipo nenachaa silly ah iruku.But Enaku over possessives, overcaring, overthinking idhula ennoda mind la unaku na highest priority kudutha But edhu na pannano adhu ennaiya regret panna vechadhuu...</p>
+          </div>
+          <div class="chapter-quote">"Namma endha alavuku love pannomo adhe alavuku neraiya sandaii dha potrukom"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q5 -->
+    <div class="question-card-wrap">
+      <div class="question-card qcard" id="qcard-5">
+        <div class="qcard-lock" id="qlock-5">
+          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+        </div>
+        <p class="qcard-label">✦ For Maheswari · Chapter V</p>
+        <p class="qcard-q">Unaku na kudutha gifts la</p>
+        <div class="qcard-options qcard-gift-grid">
+          <button class="qcard-gift-btn" onclick="answerQ(5,'Butterfly Chain 🦋')">
+            <div class="gift-img-box"><img src="M-ui/qns/Butterfly chain.png" alt="Butterfly Chain"></div>
+            <span class="gift-label">Butterfly Chain</span>
+          </button>
+          <button class="qcard-gift-btn" onclick="answerQ(5,'Ring 💍')">
+            <div class="gift-img-box"><img src="M-ui/qns/RIng.png" alt="Ring"></div>
+            <span class="gift-label">Ring</span>
+          </button>
+          <button class="qcard-gift-btn" onclick="answerQ(5,'Eye pendant 👁')">
+            <div class="gift-img-box"><img src="M-ui/qns/Eye pendant.jpg" alt="Eye Pendant"></div>
+            <span class="gift-label">Eye Pendant</span>
+          </button>
+        </div>
+        <div class="qcard-answered" id="qans-5"></div>
+      </div>
+    </div>
+
+    </div><!-- /gate-5 -->
+
+    <!-- GATE 6: Chapter W (revealed after Q5) -->
+    <div class="chapter-gate" id="gate-6">
+
+    <div class="divider">
+      <div class="divider-line"></div><span class="divider-symbol">✦</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- ===== CHAPTER W ===== -->
+    <section class="chapter" id="ch-w" data-chapter="5" data-mood="wound">
+      <div class="chapter-letter-bg">W</div>
+      <div class="chapter-inner">
+        <div class="chapter-visual reveal">
+          <div class="photo-frame">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+            <img src="M-ui/spl/6.jpg" alt="Chapter VI Visual">
+            <div class="memory-tag">The Mistake · The Lesson</div>
+          </div>
+        </div>
+        <div class="chapter-text reveal">
+          <p class="chapter-number">Chapter VI · The Worst Chapter · Truth</p>
+          <div class="chapter-letter">W</div>
+          <h2 class="chapter-title">Wounds That Wrote Themselves in Silence</h2>
+          <span class="chapter-mood">🩶 Break Up · My Mistake · Truth</span>
+          <div class="chapter-story">
+            <p>And Enaku Un mela suthama nambikaiye illanu nenaikiren, En nee enkita romba open ah irundhum na unaku freedom kuduthadhu kedaiyadhu, Na pannadhu la rombave thappu(Mathavanga private ah pakuradhu)What I did to you is absolutely wrong and Obviously shameful(Shame on me) That ends with broke up ourselves. Idhu namma worst chapter in my life</p>
+            <p>Naa unnaiya neraiya Bad words la neraiyaa thitiruken, vulgar ah pesiruken. Ipo nenaikumbothu Oru ponnu kita behave pannadhu enaku romba asingama irukuu. I felt very bad for you</p>
+            <p>Naa adhu nenachu romba regret paniruken</p>
+          </div>
+          <div class="chapter-quote">"Idhu namma worst chapter in my life"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q6 -->
+    <div class="question-card-wrap">
+      <div class="question-card qcard" id="qcard-6">
+        <div class="qcard-lock" id="qlock-6">
+          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+        </div>
+        <p class="qcard-label">✦ For Maheswari · Chapter VI</p>
+        <p class="qcard-q">Unaaku enkita irundhu venumna ena solluva?</p>
+        <div class="qcard-options">
+          <button class="qcard-btn" onclick="answerQ(6,'Kiss 💋')">Kiss 💋</button>
+          <button class="qcard-btn" onclick="answerQ(6,'Hug 🤗')">Hug 🤗</button>
+          <button class="qcard-btn" onclick="answerQ(6,'Sleep on my lap 🌙')">Sleep on my lap 🌙</button>
+        </div>
+        <div class="qcard-answered" id="qans-6"></div>
+      </div>
+    </div>
+
+    </div><!-- /gate-6 -->
+
+    <!-- GATE 7: Chapter A2 (revealed after Q6) -->
+    <div class="chapter-gate" id="gate-7">
+
+    <div class="divider">
+      <div class="divider-line"></div><span class="divider-symbol">✦</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- ===== CHAPTER A2 ===== -->
+    <section class="chapter" id="ch-a2" data-chapter="6" data-mood="apart">
+      <div class="chapter-letter-bg">A</div>
+      <div class="chapter-inner">
+        <div class="chapter-visual reveal">
+          <div class="photo-frame">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+            <img src="M-ui/spl/7.jpg" alt="Chapter VII Visual">
+            <div class="memory-tag">December · The Hardest Silence</div>
+          </div>
+        </div>
+        <div class="chapter-text reveal">
+          <p class="chapter-number">Chapter VII · December · The Silence</p>
+          <div class="chapter-letter">A</div>
+          <h2 class="chapter-title">Apart — But Never Fully Gone</h2>
+          <span class="chapter-mood">🌑 December · Kastam · Missing You</span>
+          <div class="chapter-story">
+            <p>December the worst month for me Unaku epdi nu enaku theriyala, but unkita pesama enaku romba kastama irundhadhu, Ennala seriyaa thoongamudiyala, edhukune theriyama una nenachu aluven. But indha time la nee marandhutaa.. But na romba try panna thookam varadhu, sapudradhila, Na veetlaye irundhen veliya kooda polaa. But enaku apo irundhadhu songs. and Na unnaiya marakuradhuku neraiya learn panna night la..</p>
+            <p>And andha sem la nee enkitaa pesuviyanu kooda enaku therla, enaku unkita epdi pesuradhunu therla, Pesuna thituduva, ilaa pudikalnu soliduvanu na unkita pesa kooda try panla.. unaiya avoid pannadha paatha.. Neeyum nallave avoid panna</p>
+            <p>But I learnt this chapter was edhume nerandharm illa nee enaku puriya vechadhuku thanks</p>
+          </div>
+          <div class="chapter-quote">"edhume nerandharm illa"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q7 -->
+    <div class="question-card-wrap">
+      <div class="question-card qcard" id="qcard-7">
+        <div class="qcard-lock" id="qlock-7">
+          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+        </div>
+        <p class="qcard-label">✦ For Maheswari · Chapter VII</p>
+        <p class="qcard-q">Unaku enkita pudicha love language?</p>
+        <div class="qcard-options">
+          <button class="qcard-btn" onclick="answerQ(7,'Eye to Eye 👁')">Eye to Eye 👁</button>
+          <button class="qcard-btn" onclick="answerQ(7,'Late night talks 🌙')">Late night talks 🌙</button>
+          <button class="qcard-btn" onclick="answerQ(7,'Romantic chats 💜')">Romantic chats 💜</button>
+          <button class="qcard-btn" onclick="answerQ(7,'Hold my hands 🤝')">Hold my hands 🤝</button>
+        </div>
+        <div class="qcard-answered" id="qans-7"></div>
+      </div>
+    </div>
+
+    </div><!-- /gate-7 -->
+
+    <!-- GATE 8: Chapter R (revealed after Q7) -->
+    <div class="chapter-gate" id="gate-8">
+
+    <div class="divider">
+      <div class="divider-line"></div><span class="divider-symbol">✦</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- ===== CHAPTER R ===== -->
+    <section class="chapter" id="ch-r" data-chapter="7" data-mood="return">
+      <div class="chapter-letter-bg">R</div>
+      <div class="chapter-inner">
+        <div class="chapter-visual reveal">
+          <div class="photo-frame">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+            <img src="M-ui/spl/8.jpg" alt="Chapter VIII Visual">
+            <div class="memory-tag">Return · Universe Knew</div>
+          </div>
+        </div>
+        <div class="chapter-text reveal">
+          <p class="chapter-number">Chapter VIII · Back Again · Shock</p>
+          <div class="chapter-letter">R</div>
+          <h2 class="chapter-title">Returning to Where I Always Belonged</h2>
+          <span class="chapter-mood">✨ Universe · Reconnect · Grateful</span>
+          <div class="chapter-story">
+            <p>Namma thirumba pesa thotangunadhum again chat la dha, But nee normal la again pesunadhu romba shock. How?</p>
+            <p>Indha universe la namaku kedaikumnu irundha andha kandipaa kedaikum, By the way nee enakava illa, anyway unakum enaiya pudikala as a love.. we could be great when we friends, or even my crush. Enooda Heart la idhuku melaa yarakum kuduka poradhila That is what im giving respect to you... So I'm not going to love anymore.. Nee unnoda vazhkiyaa Nalla vazhanum, sirchitute irukanum. Thats enough for me</p>
+          </div>
+          <div class="chapter-quote">"Thats enough for me"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q8 -->
+    <div class="question-card-wrap">
+      <div class="question-card qcard" id="qcard-8">
+        <div class="qcard-lock" id="qlock-8">
+          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+        </div>
+        <p class="qcard-label">✦ For Maheswari · Chapter VIII</p>
+        <p class="qcard-q">Nee nejamalume enaiya love paaniya andha time la?</p>
+        <div class="qcard-options">
+          <button class="qcard-btn" onclick="answerQ(8,'yes 💜')">yes 💜</button>
+          <button class="qcard-btn" onclick="answerQ(8,'No 🙈')">No 🙈</button>
+        </div>
+        <div class="qcard-answered" id="qans-8"></div>
+      </div>
+    </div>
+
+    </div><!-- /gate-8 -->
+
+    <!-- GATE 9: Chapter I (revealed after Q8) -->
+    <div class="chapter-gate" id="gate-9">
+
+    <div class="divider">
+      <div class="divider-line"></div><span class="divider-symbol">✦</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- ===== CHAPTER I ===== -->
+    <section class="chapter" id="ch-i" data-chapter="8" data-mood="infinity">
+      <div class="chapter-letter-bg">I</div>
+      <div class="chapter-inner">
+        <div class="chapter-visual reveal">
+          <div class="photo-frame">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+            <img src="M-ui/spl/9.jpg" alt="Chapter IX Visual">
+            <div class="memory-tag">Infinity · Always Yours · Kolandha</div>
+          </div>
+        </div>
+        <div class="chapter-text reveal">
+          <p class="chapter-number">Chapter IX · Always · Forever</p>
+          <div class="chapter-letter">I</div>
+          <h2 class="chapter-title">Infinity — Because Some Stories Don't End</h2>
+          <span class="chapter-mood">♾ Forever · Respect · Always You</span>
+          <div class="chapter-story">
+            <p>If I failed as a friend I'm sorry,</p>
+            <p>If I failed as a Boyfriend I'm sorry</p>
+            <p>Im the wrong person in your life</p>
+            <p>Sorry for hurting you </p>
+            <p>Sometimes I smile for no reason, its because of you</p>
+            <p>You are the best thing that has ever happened in my life. You are perfect</p>
+            <p>But I love you Kolandha</p>
+            <p>I still love you </p>
+            <p>you are always special in my life</p>
+            <p>I'm yours, even if you're not mine</p>
+          </div>
+          <div class="chapter-quote">"I'm yours, even if you're not mine"</div>
+        </div>
+      </div>
+    </section>
+
+        <p class="qcard-q">Indha story padichathum — un manasula enna feel aagudu?</p>
+        <div class="qcard-options">
+          <button class="qcard-btn" onclick="answerQ(9,'Crying & Happy both 🥹')">Crying &amp; Happy both 🥹</button>
+          <button class="qcard-btn" onclick="answerQ(9,'So many memories hit at once 💜')">So many memories hit at once
+  💜</button>
+          <button class="qcard-btn" onclick="answerQ(9,'Overwhelmed 🌸')">Overwhelmed 🌸</button>
+        </div>
+        <div class="qcard-answered" id="qans-11"></div>
+      </div>
+    </div>
+
+    </div><!-- /gate-9 -->
+
+    <!-- GATE EPILOGUE (revealed after Q9) -->
+    <div class="chapter-gate" id="gate-epilogue">
+
+    <!-- GALLERY -->
+    <section id="gallery">
+      <div class="gallery-header reveal">
+        <h2 class="gallery-title">Our Memories</h2>
+        <p class="gallery-sub">✦ Frame by Frame ✦</p>
+      </div>
+      <div class="slideshow-wrap">
+        <div class="slideshow-track" id="track1"></div>
+      </div>
+      <div style="height:1rem"></div>
+      <div class="slideshow-wrap">
+        <div class="slideshow-track" id="track2" style="animation-direction:reverse;"></div>
+      </div>
+    </section>
+
+    <!-- EPILOGUE -->
+    <section id="epilogue">
+      <div class="epilogue-glow"></div>
+      <h2 class="epilogue-title reveal">Happy Birthday, Maheswari 🌸</h2>
+      <p class="epilogue-text reveal">
+        M irundhu I varaiku — nine letters, nine chapters,<br>oru payanam ellam unnoda.<br><br>
+        <em>Nee Maheswari ah irundhaa — My Ammu ah maari,</em><br>
+        Kolandha, Mahi, Bun uh, Thakkali, Korangu — ellame nee dhan.<br><br>
+        Nee sirichitue irukanum. Nee nalla vazhanum.<br>
+        <em>Adhu mattum thaan — always enough for me.</em><br><br>
+        I still love you, quietly, deeply, endlessly.<br>
+        <em>Some love stories don't need an ending —<br>they just become infinity. 💫</em>
+      </p>
+      <p class="epilogue-names reveal">
+        From Vishnu — with everything <span class="heart-beat">♥</span> Always
+      </p>
+    </section>
+
+    <!-- FEEDBACK HUB -->
+    <section class="feedback-hub">
+      <div class="feed-title">Rate My Website ✦</div>
+      
+      <div class="rating-container">
+        <p class="rating-label">Overall Experience</p>
+        <div class="stars" id="star-rating">
+          <span class="star" onclick="setRating(1)">★</span>
+          <span class="star" onclick="setRating(2)">★</span>
+          <span class="star" onclick="setRating(3)">★</span>
+          <span class="star" onclick="setRating(4)">★</span>
+          <span class="star" onclick="setRating(5)">★</span>
+        </div>
+      </div>
+
+      <div class="feedback-form">
+        <div class="feed-group">
+          <label class="feed-q">What did you think about the gifts?</label>
+          <input type="text" class="feed-input" placeholder="Your thoughts..." id="q-gift">
+        </div>
+        <div class="feed-group">
+          <label class="feed-q">How's the design of our story?</label>
+          <input type="text" class="feed-input" placeholder="Your thoughts..." id="q-design">
+        </div>
+        <div class="feed-group full">
+          <label class="feed-q">Describe your feel about this (Minimum 100 words) ❤️</label>
+          <div class="textarea-container">
+            <textarea class="feed-input" id="feed-text" rows="6" placeholder="Write your heart out..." oninput="checkWordCount()"></textarea>
+            <div class="word-count" id="word-count-display">0 / 100 words</div>
+          </div>
+          <button class="voice-btn" onclick="toggleVoice()" id="voice-btn">
+            <span id="voice-icon">🎤</span> <span id="voice-text">Express via Voice</span>
+          </button>
+        </div>
+        <button class="submit-feed" id="submit-btn" onclick="submitFeedback()">Submit Feedback ✦</button>
+      </div>
+    </section>
+
+    </div><!-- /gate-epilogue -->
+
+  </div><!-- /main-site -->
+
+  <!-- ANSWERS OVERLAY (Full Screen) -->
+  <div id="answers-overlay">
+    <div class="overlay-header">
+      <span class="overlay-title">Her Heart ✦ All Answers</span>
+      <button class="overlay-close" onclick="closeAnswersOverlay()">✕</button>
+    </div>
+    <div class="overlay-body">
+      <div class="overlay-intro">
+        <h2>Everything she felt</h2>
+        <p>click m · five times · to open</p>
+      </div>
+      <div id="overlay-cards"></div>
+      <div class="overlay-footer">Written in the stars, answered in her heart ✦</div>
+    </div>
+  </div>
+
+  <script>
+    // ===== LOCK & FEEDBACK LOGIC =====
+    let currentPass = '';
+    const correctPass = '1204'; // Default birthday passcode
+
+    function dial(val) {
+      const dots = document.querySelectorAll('#pass-display .dot');
+      const err = document.getElementById('lock-err');
+      
+      if (val === 'clear') {
+        currentPass = '';
+      } else if (val === 'del') {
+        currentPass = currentPass.slice(0, -1);
+      } else if (val === 'verify') {
+        if (currentPass.length === 4) {
+          if (currentPass === correctPass) {
+            unlockSite();
+          } else {
+            triggerError();
+          }
+        } else {
+          triggerError();
+        }
+        return;
+      } else if (currentPass.length < 4) {
+        currentPass += val;
+      }
+
+      // Update dots
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i < currentPass.length);
+      });
+    }
+
+    function triggerError() {
+      const err = document.getElementById('lock-err');
+      const dots = document.querySelectorAll('#pass-display .dot');
+      err.classList.add('visible');
+      document.getElementById('pass-display').classList.add('shake');
+      setTimeout(() => {
+        currentPass = '';
+        dots.forEach(dot => dot.classList.remove('active'));
+        err.classList.remove('visible');
+        document.getElementById('pass-display').classList.remove('shake');
+      }, 800);
+    }
+
+    function unlockSite() {
+      const lock = document.getElementById('lock-gate');
+      const entry = document.getElementById('entry-page');
+      lock.style.opacity = '0';
+      setTimeout(() => {
+        lock.classList.add('hidden');
+        entry.classList.remove('hidden');
+        // Trigger shimmering messages sequence if needed
+      }, 1000);
+    }
+
+    // Feedback logic
+    let userRating = 0;
+    function setRating(val) {
+      userRating = val;
+      const stars = document.querySelectorAll('.star');
+      stars.forEach((s, i) => {
+        s.classList.toggle('active', i < val);
+      });
+      checkFormValidity();
+    }
+
+    function checkWordCount() {
+      const text = document.getElementById('feed-text').value.trim();
+      const words = text ? text.split(/\s+/).length : 0;
+      const display = document.getElementById('word-count-display');
+      display.textContent = `${words} / 100 words`;
+      display.classList.toggle('valid', words >= 100);
+      checkFormValidity();
+    }
+
+    function checkFormValidity() {
+      const text = document.getElementById('feed-text').value.trim();
+      const words = text ? text.split(/\s+/).length : 0;
+      const btn = document.getElementById('submit-btn');
+      if (words >= 100 && userRating > 0) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    }
+
+    let isRecording = false;
+    function toggleVoice() {
+      const btn = document.getElementById('voice-btn');
+      const text = document.getElementById('voice-text');
+      isRecording = !isRecording;
+      if (isRecording) {
+        btn.classList.add('recording');
+        text.textContent = 'Recording Heartbeat...';
+        // Simulating recording
+        setTimeout(() => {
+          if(isRecording) toggleVoice();
+          alert("Voice captured! (Simulation)");
+        }, 5000);
+      } else {
+        btn.classList.remove('recording');
+        text.textContent = 'Voice Captured';
+      }
+    }
+
+    function submitFeedback() {
+      alert("Thank you Maheswari! Your feelings have been woven into the story forever. ❤️");
+      // In a real app, this would send to an API.
+    }
+
+    // Existing Stars Canvas Logic
+    const canvas = document.getElementById('sc'), ctx = canvas.getContext('2d'); let stars = [];
+    function rc() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    function is() { stars = []; for (let i = 0; i < 140; i++)stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + .2, speed: Math.random() * .003 + .001, tw: Math.random() * Math.PI * 2 }); }
+    function ds() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.tw += s.speed; const a = .2 + .5 * Math.abs(Math.sin(s.tw)); ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(200,180,232,${a})`; ctx.fill(); }); requestAnimationFrame(ds); }
+    rc(); is(); ds(); window.addEventListener('resize', () => { rc(); is(); });
+
+    // ===== PETALS (fewer on mobile for perf) =====
+    function cp() {
+      const p = document.createElement('div'); p.className = 'petal';
+      const s = ['✿', '❀', '✾', '❁', '·'];
+      p.textContent = s[Math.floor(Math.random() * s.length)];
+      p.style.cssText = `left:${Math.random() * 100}%;font-size:${6 + Math.random() * 10}px;animation-duration:${10 + Math.random() * 15}s;animation-delay:${Math.random() * 3}s;color:rgba(200,150,232,${.1 + Math.random() * .2});`;
+      document.getElementById('petals').appendChild(p);
+      setTimeout(() => p.remove(), 28000);
+    }
+    setInterval(cp, 1600);
+
+    // ===== PROGRESS BAR =====
+    window.addEventListener('scroll', () => {
+      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    }, { passive: true });
+
+    // ===== MUSIC =====
+    const chapterSongs=[
+      {title:'Kiss the Rain', ch:'Chapter I — Making', file: 'Music/kiss_d_rain_x_river --1.mp3'},
+      {title:'Nuvole Bianche', ch:'Chapter II — Always', file: 'Music/nuvole_bianche_wedding --2.mp3'},
+      {title:'A Thousand Years', ch:'Chapter III — Holding', file: 'Music/A_Thousand_years --3.mp3'},
+      {title:"Comptine d'un autre été", ch:'Chapter IV — Every Day', file: "Music/Yann Tiersen - Comptine d'un autre été (Amélie) --4.mp3"},
+      {title:'Experience (Slowed)', ch:'Chapter V — Storms', file: 'Music/Ludovico Einaudi - Experience (Slowed)  --5.mp3'},
+      {title:'The Night We Met', ch:'Chapter VI — Wounds', file: 'Music/The night we met --6.m4a'},
+      {title:'Your Hand in Mine', ch:'Chapter VII — Apart', file: 'Music/your hand in mine --7.m4a'},
+      {title:'Dandelions Violin', ch:'Chapter VIII — Returning', file: 'Music/dandelions_violin  --8.mp3'},
+      {title:'Kamin', ch:'Chapter IX — Infinity', file: 'Music/kamin --9.m4a'},
+    ];
+    let mPlaying=false,mIdx=0,mAudio=null;
+    function toggleMusic(){
+      mPlaying=!mPlaying;
+      document.getElementById('mplay').textContent=mPlaying?'⏸':'▶';
+      document.getElementById('mdisc').classList.toggle('paused',!mPlaying);
+      document.getElementById('mwaves').classList.toggle('paused',!mPlaying);
+      if (mPlaying) {
+        if (mAudio) mAudio.play();
+        else updateMusicChapter(mIdx);
+      } else {
+        if (mAudio) mAudio.pause();
+      }
+    }
+    function updateMusicChapter(idx){
+      if(idx===mIdx && mAudio)return;
+      mIdx=idx;
+      const s=chapterSongs[idx];
+      document.getElementById('mtitle').textContent=s.title;
+      document.getElementById('mchap').textContent=s.ch;
+      const mp=document.getElementById('music-player');
+      mp.style.borderColor='rgba(155,114,207,.6)';
+      setTimeout(()=>mp.style.borderColor='rgba(155,114,207,.25)',1500);
+
+      if (mAudio) {
+        mAudio.pause();
+      }
+      mAudio = new Audio(s.file);
+      mAudio.loop = true;
+      mAudio.volume = 0.5;
+      if (mPlaying) {
+        mAudio.play();
+      }
+    }
+
+    // ===== ENTRY =====
+    setTimeout(() => document.getElementById('sl1').classList.add('visible'), 700);
+    setTimeout(() => document.getElementById('sl2').classList.add('visible'), 1600);
+    setTimeout(() => document.getElementById('sl3').classList.add('visible'), 2500);
+    setTimeout(() => document.getElementById('sl4').classList.add('visible'), 3300);
+    function enterSite() {
+      document.getElementById('entry-page').classList.add('hidden');
+      const m = document.getElementById('main-site');
+      m.style.display = 'block';
+      setTimeout(() => m.classList.add('visible'), 100);
+      // Automatically start music on entry
+      if (!mPlaying) toggleMusic();
+    }
+
+
+
+    // ===== ANSWERS (Latest always wins) =====
+    const AK = 'mahiAnswers';
+    function loadA() { try { return JSON.parse(localStorage.getItem(AK) || '{}'); } catch { return {}; } }
+    // Save always overwrites — latest answer is stored
+    function saveA(q, a) { const d = loadA(); d[q] = a; localStorage.setItem(AK, JSON.stringify(d)); }
+
+    // Gate mapping: answering Q(n) reveals gate-(n+1)
+    // Q1→gate-2, Q2→gate-3, Q3→gate-4, Q4→gate-5, Q5→gate-6
+    // Q6→gate-7, Q7→gate-8, Q8→gate-9, Q9→gate-epilogue
+    const gateMap = { 1:'gate-2', 2:'gate-3', 3:'gate-4', 4:'gate-5', 5:'gate-6',
+                      6:'gate-7', 7:'gate-8', 8:'gate-9', 9:'gate-epilogue' };
+
+    function answerQ(qNum, answer) {
+      const card = document.getElementById('qcard-' + qNum);
+      const ansEl = document.getElementById('qans-' + qNum);
+      if (!card) return;
+      // Allow re-answering: remove done class temporarily
+      card.querySelectorAll('button').forEach(b => b.classList.add('disabled'));
+      card.classList.add('done');
+      ansEl.innerHTML = '✦ &nbsp;' + answer + '&nbsp; ✦';
+      saveA('Q' + qNum, answer); // Latest answer always stored
+
+      // Unlock the next question card's lock overlay
+      const nextLock = document.getElementById('qlock-' + (qNum + 1));
+      if (nextLock) setTimeout(() => nextLock.classList.add('unlocked'), 600);
+
+      // Reveal the next chapter gate with animation
+      const gateId = gateMap[qNum];
+      if (gateId) {
+        const gate = document.getElementById(gateId);
+        if (gate && gate.style.display !== 'block') {
+          gate.style.display = 'block';
+          // Trigger reflow for animation
+          gate.offsetHeight;
+          gate.classList.add('visible');
+          gate.style.animation = 'gateReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both';
+          setTimeout(() => gate.scrollIntoView({ behavior: 'smooth', block: 'start' }), 700);
+        }
+      }
+
+      // Auto-open overlay when all 9 answered
+      const d = loadA();
+      if (Object.keys(d).length >= 9) {
+        setTimeout(() => openAnswersOverlay(), 1200);
+      }
+    }
+
+    // ===== ANSWERS OVERLAY =====
+    const QLABELS = [
+      'Favourite feature — more than eyes',
+      'Want a hug?',
+      'Feeling when he held your hand',
+      'Favourite nickname',
+      'Favourite gift from him',
+      'What she wants from him',
+      'Favourite love language',
+      'Did she really love him?',
+      'Feeling after reading this story'
+    ];
+
+    function openAnswersOverlay() {
+      const d = loadA();
+      const container = document.getElementById('overlay-cards');
+      container.innerHTML = '';
+      for (let i = 1; i <= 9; i++) {
+        const card = document.createElement('div');
+        card.className = 'ans-card';
+        card.style.animationDelay = (i * 0.08) + 's';
+        const ans = d['Q' + i];
+        card.innerHTML = `
+          <div class="ans-card-q">Q${i} · ${QLABELS[i-1]}</div>
+          ${ans
+            ? `<div class="ans-card-a">${ans}</div>`
+            : `<div class="ans-card-empty">Not answered yet...</div>`
+          }
+        `;
+        container.appendChild(card);
+      }
+      document.getElementById('answers-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeAnswersOverlay() {
+      document.getElementById('answers-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function restoreAnswers() {
+      const d = loadA();
+      // Restore answered state on cards
+      for (let i = 1; i <= 9; i++) {
+        if (d['Q' + i]) {
+          const card = document.getElementById('qcard-' + i);
+          const ansEl = document.getElementById('qans-' + i);
+          if (card && ansEl) {
+            card.classList.add('done');
+            card.querySelectorAll('button').forEach(b => b.classList.add('disabled'));
+            ansEl.innerHTML = '✦ &nbsp;' + d['Q' + i] + '&nbsp; ✦';
+          }
+          // Restore lock unlocked state
+          const nL = document.getElementById('qlock-' + (i + 1));
+          if (nL) nL.classList.add('unlocked');
+          // Restore chapter gate visibility
+          const gateId = gateMap[i];
+          if (gateId) {
+            const gate = document.getElementById(gateId);
+            if (gate) {
+              gate.style.display = 'block';
+              gate.style.opacity = '1';
+              gate.style.transform = 'translateY(0)';
+              gate.style.animation = 'none';
+            }
+          }
+        }
+      }
+    }
+
+    // Secret Trigger: Click 'M' (first letter) 5 times to open answers overlay
+    let mClicks = 0, mClickTimer = null;
+    document.querySelector('.hero-title span:first-child')?.addEventListener('click', () => {
+      mClicks++;
+      clearTimeout(mClickTimer);
+      // Add a brief visual pulse when clicked  
+      const span = document.querySelector('.hero-title span:first-child');
+      span.style.filter = 'drop-shadow(0 0 20px #fff)';
+      setTimeout(() => span.style.filter = '', 300);
+
+      if (mClicks >= 5) {
+        openAnswersOverlay();
+        mClicks = 0;
+      } else {
+        // Reset after 3 seconds of inactivity
+        mClickTimer = setTimeout(() => mClicks = 0, 3000);
+      }
+    });
+
+    // ===== CHAPTER OBSERVER =====
+    const chSecs = document.querySelectorAll('.chapter[data-chapter]');
+    const unlocked = new Set();
+    const chObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const idx = parseInt(e.target.dataset.chapter);
+          updateMusicChapter(idx);
+          const qNum = idx + 1;
+          const lock = document.getElementById('qlock-' + qNum);
+          if (lock && !unlocked.has(qNum)) {
+            unlocked.add(qNum);
+            setTimeout(() => lock.classList.add('unlocked'), 1000);
+          }
+        }
+      });
+    }, { threshold: 0.4 });
+    chSecs.forEach(s => chObs.observe(s));
+
+    // ===== REVEAL =====
+    const revEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+    const ro = new IntersectionObserver(en => { en.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: .1 });
+    revEls.forEach(el => ro.observe(el));
+
+    // ===== NAV ACTIVE =====
+    const navLinks = document.querySelectorAll('.nav-letter');
+    const navIds = ['ch-m', 'ch-a', 'ch-h', 'ch-e', 'ch-s', 'ch-w', 'ch-a2', 'ch-r', 'ch-i'];
+    const navObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const id = e.target.id;
+          navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+          // scroll nav to active
+          const active = document.querySelector('.nav-letter.active');
+          if (active) active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      });
+    }, { threshold: .35 });
+    navIds.forEach(id => { const el = document.getElementById(id); if (el) navObs.observe(el); });
+
+    // ===== SMOOTH SCROLL =====
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // ===== GALLERY =====
+    const captions = ['College days', 'First smiles', 'Bus memories', 'Mall moments', 'Ice cream days', 'Happy chaos', 'Late night vibes', 'Saree memory', 'Feb 14', 'Video call days', 'Favourite laugh', 'Quiet moment', 'Our fights', 'Our making up', 'Birthday wishes', 'Class memories', 'Nicknames era', 'Kolandha days', 'Thakkali days', 'Korangu energy', 'Ammu always', 'Dec nights', 'Comeback story', 'Universe knew', 'Friends forever', 'Eye to eye', 'Late night talks', 'Romantic chats', 'Holding hands', 'Just us', 'Butterfly chain', 'Ring memory', 'Eye pendant', 'Gift moments', 'Sweet nothings', 'First glance', 'Lab incident', 'Sorry accepted', 'Sight adichitu', 'Crush era', 'Love language', 'Virtual kisses', 'Live shows', 'Small gifts', 'Missing you', 'Star gazing', 'Night sky', 'Dancing alone', 'Coming home', 'Infinity', 'Always', 'Forever', 'Now & always', 'Our story', 'Kolandha ♾'];
+    const images = ['IMG_20260307_220812_846.jpg','IMG_20260307_233444_590.jpg','IMG_20260307_233446_554.jpg','IMG_20260403_125101_529.jpg','IMG_20260403_125129_058.jpg','IMG_20260403_125132_672.jpg','IMG_20260403_125200_516.jpg','IMG_20260403_125203_175.jpg','IMG_20260403_125205_141.jpg','IMG_20260403_125206_657.jpg','IMG_20260403_125216_226.jpg','IMG_20260403_125218_416.jpg','IMG_20260403_125311_177.jpg','IMG_20260403_125324_918.jpg','IMG_20260403_125332_179.jpg','IMG_20260403_125340_096.jpg','IMG_20260403_125342_681.jpg','IMG_20260403_125348_968.jpg','IMG_20260403_125352_281.jpg','IMG_20260403_125453_114.jpg','IMG_20260403_125554_895.jpg','IMG_20260403_125600_453.jpg','IMG_20260403_125610_897.jpg','IMG_20260403_125613_647.jpg','IMG_20260403_125615_034.jpg','IMG_20260403_125616_604.jpg','IMG_20260403_125617_709.jpg','IMG_20260403_125641_083.jpg','IMG_20260403_125647_861.jpg','IMG_20260403_125708_144.jpg','IMG_20260403_125722_161.jpg','IMG_20260403_125729_328.jpg','IMG_20260403_125817_754.jpg','IMG_20260403_125916_224.jpg','IMG_20260403_125919_478.jpg','IMG_20260403_125927_605.jpg','IMG_20260403_125929_002.jpg','IMG_20260403_125934_016.jpg','IMG_20260403_125941_314.jpg','IMG_20260403_125942_755.jpg','IMG_20260403_125946_534.jpg','IMG_20260403_125954_860.jpg','IMG_20260403_130000_889.jpg','IMG_20260403_130004_048.jpg','IMG_20260403_130006_650.jpg','IMG_20260403_130030_172.jpg','IMG_20260403_130040_970.jpg','IMG_20260403_130045_723.jpg','IMG_20260403_130109_414.jpg','IMG_20260403_130112_482.jpg','IMG_20260403_130115_458.jpg','IMG_20260403_130119_948.jpg','IMG_20260403_130153_630.jpg','IMG_20260403_130155_146.jpg','IMG_20260403_130207_646.jpg','IMG_20260403_130211_239.jpg','IMG_20260403_130215_655.jpg','IMG_20260403_155001.JPG','IMG_20260404_012119.JPG','IMG_20260405_172340_291.jpg','IMG_20260405_172341_874.jpg','IMG_20260405_172502_691.jpg','IMG_20260405_172507_866.jpg','IMG_20260405_172514_242.jpg','IMG_20260405_172528_231.jpg','IMG_20260405_172548_409.jpg','IMG_20260405_172607_451.jpg','IMG_20260405_172609_216.jpg','IMG_20260405_172641_382.jpg','IMG_20260405_172644_925.jpg','IMG_20260405_172646_951.jpg','IMG_20260405_172649_349.jpg','IMG_20260405_172651_187.jpg','IMG_20260405_172653_024.jpg','IMG_20260405_172702_323.jpg','IMG_20260405_172707_047.jpg','IMG_20260405_172714_621.jpg','IMG_20260405_172730_426.jpg','IMG_20260405_172731_719.jpg','IMG_20260405_172733_331.jpg','IMG_20260405_172734_662.jpg','IMG_20260405_172801_300.jpg','IMG_20260405_172803_699.jpg','IMG_20260405_172828_163.jpg','IMG_20260405_172838_323.jpg','IMG_20260405_172842_822.jpg','IMG_20260405_172900_610.jpg','IMG_20260405_172907_563.jpg','IMG_20260405_172916_016.jpg','IMG_20260405_172917_722.jpg','IMG_20260405_172928_462.jpg','IMG_20260405_172931_721.jpg','IMG_20260405_172933_896.jpg','IMG_20260405_172942_443.jpg','IMG_20260405_172945_572.jpg','IMG_20260405_172947_408.jpg','IMG_20260405_172948_945.jpg','IMG_20260405_172950_669.jpg','IMG_20260405_173052_656.jpg','IMG_20260405_173100_318.jpg','IMG_20260405_173248_858.jpg','IMG_20260405_173300_743.jpg','IMG_20260405_173303_014.jpg','IMG_20260405_173306_238.jpg','IMG_20260405_173317_634.jpg','IMG_20260405_173337_786.jpg','IMG_20260405_173343_073.jpg','IMG_20260405_173403_994.jpg','IMG_20260405_173410_126.jpg','IMG_20260407_231902.JPG','photo_6257769115963559422_y.jpg','photo_6257769115963559423_y.jpg','splmem.jpg','spl/1.jpg','spl/2.jpg','spl/3.jpg','spl/4.jpg','spl/5.jpg','spl/6.jpg','spl/7.jpg','spl/8.jpg','spl/9.jpg'];
+    function buildGallery() {
+      const t1 = document.getElementById('track1');
+      const t2 = document.getElementById('track2');
+      const half = Math.ceil(images.length / 2);
+      const row1 = images.slice(0, half);
+      const row2 = images.slice(half);
+      function makeItem(imgName, i) {
+        const d = document.createElement('div');
+        d.className = 'slide-item';
+        const cap = captions[i % captions.length];
+        d.innerHTML = `<img src="M-ui/${imgName}" alt="Memory" style="width:100%;height:100%;object-fit:cover;"><div class="slide-caption">${cap}</div>`;
+        return d;
+      }
+      [...row1, ...row1].forEach((img, i) => t1.appendChild(makeItem(img, i)));
+      [...row2, ...row2].forEach((img, i) => t2.appendChild(makeItem(img, i + half)));
+    }
+    buildGallery();
+
+    window.addEventListener('load', () => { restoreAnswers(); });
+  </script>
+</body>
+
+</html>
