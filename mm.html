@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,6 +48,7 @@
       cursor: auto;
       padding-top: var(--safe-top);
     }
+    body.locked { overflow: hidden; height: 100vh; }
 
     /* STARS */
     #sc {
@@ -398,169 +400,152 @@
       overflow-y: auto;
     }
 
-    #lock-gate.hidden {
-      opacity: 0;
-      visibility: hidden;
+    /* ===== SITE ENTRANCE (Realistic 3D Doors - Mobile) ===== */
+    #door-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      display: flex;
+      perspective: 1500px;
+      background: #000;
+      transition: visibility 0s 1.5s;
+    }
+    .door-panel {
+      width: 50%;
+      height: 100%;
+      background: #1a0f35;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(155,114,207,0.3);
+      transform-style: preserve-3d;
+    }
+    .door-left {
+      border-right: 3px solid var(--gold);
+      transform-origin: left center;
+      background: linear-gradient(90deg, #1a0f35, #25164d);
+    }
+    .door-right {
+      border-left: 3px solid var(--gold);
+      transform-origin: right center;
+      background: linear-gradient(-90deg, #1a0f35, #25164d);
+    }
+    .door-surface {
+      position: absolute;
+      inset: 15px;
+      border: 1.5px solid rgba(212, 175, 55, 0.2);
       pointer-events: none;
     }
-
-    .lock-layout {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 100%;
-    }
-
-    .lock-visual {
-      height: 40vh;
-      position: relative;
-      background: rgba(106, 63, 160, 0.1);
-      overflow: hidden;
-    }
-
-    .lock-visual img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.8;
-    }
-
-    .lock-controls {
-      padding: 2rem 1.5rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: linear-gradient(to bottom, transparent, var(--night));
-    }
-
-    .lock-rules {
-      display: flex;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      animation: fadeUp 1s ease both;
-    }
-
-    .rule-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--lav);
-      font-size: 0.75rem;
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      text-align: center;
-    }
-
-    .lock-title {
-      font-family: 'Cinzel', serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.4em;
-      color: var(--tdim);
-      margin-bottom: 2rem;
-      text-transform: uppercase;
-      opacity: 0.8;
-    }
-
-    .password-display {
-      display: flex;
-      gap: 1.2rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 1px solid rgba(155, 114, 207, 0.4);
-      transition: all 0.3s ease;
-      background: transparent;
-    }
-
-    .dot.active {
-      background: var(--lav);
-      box-shadow: 0 0 10px var(--lav);
-      border-color: var(--lav);
-    }
-
-    /* Decorative ring for mobile */
-    .lock-ring {
+    .door-surface::before {
+      content: '';
       position: absolute;
-      width: 18px;
-      height: 18px;
-      border: 1px solid rgba(155, 114, 207, 0.6);
+      inset: 8px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+    }
+    .door-handle {
+      width: 60px;
+      height: 60px;
+      border: 2px solid var(--gold);
       border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      right: -30px;
+      transform: translateY(-50%) translateZ(30px);
+      background: #25164d;
+      z-index: 10;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 10px rgba(155, 114, 207, 0.4);
-      z-index: 5;
-    }
-
-    .ring-core {
-      width: 5px;
-      height: 5px;
-      background: var(--lav);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--lav);
-    }
-
-    .dialpad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-bottom: 2rem;
-      width: 100%;
-      max-width: 280px;
-    }
-
-    .dial-btn {
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: rgba(155, 114, 207, 0.05);
-      border: 1px solid rgba(155, 114, 207, 0.2);
-      color: var(--tmain);
-      font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
       cursor: pointer;
-      transition: all 0.2s;
-      -webkit-tap-highlight-color: transparent;
     }
-
-    .dial-btn:active {
-      background: var(--vio);
-      transform: scale(0.9);
-      box-shadow: 0 0 20px var(--vio);
+    .door-right .door-handle { right: auto; left: -30px; }
+    .door-handle::after {
+      content: '✥';
+      color: var(--gold);
+      font-size: 1.5rem;
     }
-
-    .dial-btn.special {
+    .door-label {
+      position: absolute;
+      font-family: 'Cinzel', serif;
       font-size: 0.8rem;
-      background: rgba(155, 114, 207, 0.1);
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.8;
+      transform: translateZ(15px);
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
     }
+    .door-left .door-label { right: 50px; }
+    .door-right .door-label { left: 50px; }
 
-    .lock-err {
-      color: #ff4d4d;
+    #door-layer.open .door-left { transform: rotateY(-110deg) translateZ(-40px); }
+    #door-layer.open .door-right { transform: rotateY(110deg) translateZ(-40px); }
+    #door-layer.open { visibility: hidden; }
+
+    #lock-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 4000;
+      background: rgba(13, 8, 24, 0.98);
+      backdrop-filter: blur(15px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+    #lock-layer.hidden { opacity: 0; pointer-events: none; }
+
+    #msg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: var(--night);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+    }
+    #msg-layer.active { opacity: 1; pointer-events: auto; }
+    .welcome-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--lav);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 1.5s ease;
+      width: 85%;
+    }
+    .welcome-text.show { opacity: 1; transform: translateY(0); }
+    .hint-text {
       font-family: 'Cinzel', serif;
       font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      margin-top: 1rem;
+      letter-spacing: 0.3em;
+      color: var(--vio);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 1s 1s;
+      text-transform: uppercase;
+      margin-top: 2rem;
     }
+    .hint-text.show { opacity: 0.4; }
 
-    .lock-err.visible { opacity: 1; }
+    /* CHAPTER LETTER ENTRANCE */
+    .chapter-letter-bg { transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; transform: translate(-50%, -50%) scale(0.85) filter(blur(10px)); }
+    .chapter-letter-bg.pop-in { opacity: 0.033; transform: translate(-50%, -50%) scale(1) filter(blur(0)); }
 
-    /* Shake animation for errors */
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-10px); }
-      75% { transform: translateX(10px); }
-    }
-
+    /* Shake animation */
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
     .shake { animation: shake 0.4s ease-in-out; }
 
     /* ===== FEEDBACK HUB ===== */
@@ -570,18 +555,8 @@
       border-top: 1px solid rgba(155, 114, 207, 0.1);
       text-align: center;
     }
-
-    .feed-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
-      color: var(--lav);
-      margin-bottom: 2rem;
-      letter-spacing: 0.1em;
-    }
-
-    .rating-container {
-      margin-bottom: 3rem;
-    }
+    .feed-title { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--lav); margin-bottom: 2rem; letter-spacing: 0.1em; }
+    .rating-container { margin-bottom: 3rem; }
 
     .rating-label {
       font-family: 'Cinzel', serif;
@@ -1952,14 +1927,101 @@
       animation: fadeUp 1s ease 1s both;
       opacity: .6;
     }
+    /* ===== AI VOICE FAB ===== */
+    .voice-fab {
+      position: fixed;
+      bottom: calc(4.5rem + var(--safe-bot));
+      right: 1rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(22, 13, 46, 0.9);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(155, 114, 207, 0.3);
+      color: var(--lav);
+      cursor: pointer;
+      z-index: 6000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .voice-fab.speaking { background: var(--dvio); border-color: var(--gold); }
+    .mic-icon { font-size: 1rem; }
+    .voice-fab.speaking .mic-icon { opacity: 0; }
+
+    .waves-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    .voice-fab.speaking .waves-container { display: flex; }
+    .bar {
+      width: 2px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 1px;
+      animation: wave 1s ease-in-out infinite;
+    }
+    .bar:nth-child(2) { animation-delay: 0.1s; }
+    .bar:nth-child(3) { animation-delay: 0.2s; }
+    .bar:nth-child(4) { animation-delay: 0.3s; }
+    @keyframes wave { 0%, 100% { height: 6px; } 50% { height: 16px; } }
+
+    .ai-overlay {
+      position: fixed;
+      top: calc(1rem + var(--safe-top));
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: rgba(13, 8, 24, 0.95);
+      backdrop-filter: blur(15px);
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      border: 1px solid rgba(155, 114, 207, 0.2);
+      z-index: 6000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+      opacity: 0;
+      pointer-events: none;
+      width: max-content;
+    }
+    .ai-overlay.active { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .dot-pulse { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; box-shadow: 0 0 8px var(--gold); animation: pulse 1.5s infinite; }
+    .ai-overlay span { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; }
   </style>
 </head>
 
-<body>
+<body class="locked">
 
   <canvas id="sc"></canvas>
   <div id="progress-bar"></div>
   <div id="petals"></div>
+
+  <!-- AI OVERLAY -->
+  <div class="ai-overlay" id="ai-status">
+    <div class="dot-pulse"></div>
+    <span>AI Reading Our Story</span>
+  </div>
+
+  <!-- VOICE FAB -->
+  <button class="voice-fab" id="voice-fab" onclick="toggleVoiceRead()">
+    <span class="mic-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+      </svg>
+    </span>
+    <div class="waves-container">
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    </div>
+  </button>
 
   <!-- MUSIC PLAYER -->
   <div id="music-player">
@@ -1974,68 +2036,45 @@
     <div class="music-play-btn" id="mplay" onclick="toggleMusic()">▶</div>
   </div>
 
-  <!-- SECURE LOCK GATE -->
-  <div id="lock-gate">
-    <div class="lock-layout">
-      <div class="lock-visual">
-        <img src="M-ui/d/Young man waving with a smile.png" alt="Welcome">
-        <div class="lock-ring" style="top:32%; left:40%;">
-          <div class="ring-core"></div>
-        </div>
-      </div>
-      <div class="lock-controls">
-        <div class="lock-rules">
-          <div class="rule-item">
-            <span>Set your earphones 🎧</span>
-          </div>
-          <div class="rule-item">
-            <span>Watch and read it in private 🤫</span>
-          </div>
-        </div>
-
-        <div class="lock-title">VERIFICATION REQUIRED ✦</div>
-        <div class="password-display" id="pass-display">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-
-        <div class="dialpad">
-          <div class="dial-btn" onclick="dial(1)">1</div>
-          <div class="dial-btn" onclick="dial(2)">2</div>
-          <div class="dial-btn" onclick="dial(3)">3</div>
-          <div class="dial-btn" onclick="dial(4)">4</div>
-          <div class="dial-btn" onclick="dial(5)">5</div>
-          <div class="dial-btn" onclick="dial(6)">6</div>
-          <div class="dial-btn" onclick="dial(7)">7</div>
-          <div class="dial-btn" onclick="dial(8)">8</div>
-          <div class="dial-btn" onclick="dial(9)">9</div>
-          <div class="dial-btn special" onclick="dial('clear')">CLEAR</div>
-          <div class="dial-btn" onclick="dial(0)">0</div>
-          <div class="dial-btn special" onclick="dial('verify')">BEGIN ✦</div>
-        </div>
-        <div class="lock-err" id="lock-err">Invalid Passcode. Access Denied.</div>
-      </div>
+  <!-- STEP 1: ENTRANCE DOORS -->
+  <div id="door-layer">
+    <div class="door-panel door-left">
+      <div class="door-surface"></div>
+      <span class="door-label">M.A.H.E.S.W.A.R.I</span>
+      <div class="door-handle" onclick="openDoors()"></div>
+    </div>
+    <div class="door-panel door-right">
+      <div class="door-surface"></div>
+      <span class="door-label">The Story</span>
+      <div class="door-handle" onclick="openDoors()"></div>
     </div>
   </div>
 
-  <!-- ENTRY PAGE (MESSAGES PHASE) -->
-  <div id="entry-page" class="hidden">
-    <div class="entry-glow"></div>
-    <div class="entry-content">
-      <div class="entry-star">✦</div>
-      <p class="entry-label">For someone who deserves the whole universe 🌌</p>
-      <p class="surprise-line" id="sl1">Oru chinna surprise iruku... 🎁</p>
-      <p class="surprise-line tanglish" id="sl2">Idhu just a website illa — 🎞️</p>
-      <p class="surprise-line" id="sl3">This is our entire story, written with love ✍️❤️</p>
-      <p class="surprise-line tanglish" id="sl4">Happy Birthday, Maheswari 🌸🎂</p>
-      <button class="enter-btn" onclick="enterSite()">Begin Our Story ✦</button>
+  <!-- STEP 2: LOCK -->
+  <div id="lock-layer" class="hidden">
+    <div class="lock-container">
+      <h1 class="lock-title">Vault Access Required ✦</h1>
+      <div class="pass-display" id="pass-display">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+      <div class="keypad">
+        <div class="key" onclick="dial(1)">1</div><div class="key" onclick="dial(2)">2</div><div class="key" onclick="dial(3)">3</div>
+        <div class="key" onclick="dial(4)">4</div><div class="key" onclick="dial(5)">5</div><div class="key" onclick="dial(6)">6</div>
+        <div class="key" onclick="dial(7)">7</div><div class="key" onclick="dial(8)">8</div><div class="key" onclick="dial(9)">9</div>
+        <div class="key clear" onclick="dial('clear')">CLEAR</div><div class="key" onclick="dial(0)">0</div><div class="key verify" onclick="dial('verify')">ENTER</div>
+      </div>
+      <div id="lock-err">Invalid Passcode Entry</div>
     </div>
+  </div>
+
+  <!-- STEP 3: MESSAGE SEQUENCE -->
+  <div id="msg-layer">
+    <p class="welcome-text" id="welcome-text">Loading our story... ❃</p>
+    <span class="hint-text" id="hint-text">Opening our Heart</span>
   </div>
 
   <!-- MAIN SITE -->
-  <div id="main-site">
+  <div id="main-site" style="opacity:0; visibility:hidden;">
 
     <!-- HERO -->
     <section id="hero">
@@ -2103,10 +2142,10 @@
         <p class="qcard-label">✦ For Maheswari · Chapter I</p>
         <p class="qcard-q">unaku enkita pudichadhu More than my eyes?</p>
         <div class="qcard-options">
-          <button class="qcard-btn" onclick="answerQ(1,'Hair 💜')">Hair 💜</button>
-          <button class="qcard-btn" onclick="answerQ(1,'Lips 💋')">Lips 💋</button>
-          <button class="qcard-btn" onclick="answerQ(1,'cheeks 🌸')">cheeks 🌸</button>
-          <button class="qcard-btn" onclick="answerQ(1,'Beard 🖤')">Beard 🖤</button>
+          <button class="qcard-btn" onclick="answerQ(1,'Hair ❦')">Hair ❦</button>
+          <button class="qcard-btn" onclick="answerQ(1,'Lips ❦')">Lips ❦</button>
+          <button class="qcard-btn" onclick="answerQ(1,'cheeks ✾')">cheeks ✾</button>
+          <button class="qcard-btn" onclick="answerQ(1,'Beard ✦')">Beard ✦</button>
         </div>
         <div class="qcard-answered" id="qans-1"></div>
       </div>
@@ -2138,7 +2177,7 @@
           <p class="chapter-number">Chapter II · Friendship · The Mall · Laughter</p>
           <div class="chapter-letter">A</div>
           <h2 class="chapter-title">Always Laughing Like the World Was Ours</h2>
-          <span class="chapter-mood">☀ Sirippu · Classmates · Pure Joy</span>
+          <span class="chapter-mood">✦ Sirippu · Classmates · Pure Joy</span>
           <div class="chapter-story">
             <p>This chapter about Ennaiya sirika vechiruka paithiyam mari, Before I've seen this before Neraiya Phone ah paathu text panitu sirichitu irupanga. Idhe nee enaku panirukaa most of the times.</p>
             <p>Class la nee oru mari 2sec paathutu siripaa Adhu ipo kooda inum maarala, that is something. And nee cringe thanama neraiya comedy panuva chatting la, Aana nalla loosu mari siripa</p>
@@ -2159,8 +2198,8 @@
         <p class="qcard-label">✦ For Maheswari · Chapter II</p>
         <p class="qcard-q">Unaku enaiya Hug pannanuma?</p>
         <div class="qcard-options">
-          <button class="qcard-btn" onclick="answerQ(2,'Yes — definitely 🤗')">Yes — definitely 🤗</button>
-          <button class="qcard-btn" onclick="answerQ(2,'No 🙈')">No 🙈</button>
+          <button class="qcard-btn" onclick="answerQ(2,'Yes — definitely ✦')">Yes — definitely ✦</button>
+          <button class="qcard-btn" onclick="answerQ(2,'No ✧')">No ✧</button>
         </div>
         <div class="qcard-answered" id="qans-2"></div>
       </div>
@@ -2194,7 +2233,7 @@
           <p class="chapter-number">Chapter III · Friend to Something More</p>
           <div class="chapter-letter">H</div>
           <h2 class="chapter-title">Holding Feelings I Couldn't Say Aloud</h2>
-          <span class="chapter-mood">🤍 Unsaid Words · Kai · Beautiful</span>
+          <span class="chapter-mood">✦ Unsaid Words · Kai · Beautiful</span>
           <div class="chapter-story">
             <p>Oru friend ah irundhu konjaa heart crush aaye Lovee ah maarunadhu, indha feel enakuu romba vandhadhu Namma bus la travel pannumbothu unnoda kai ah first time thotta, pudhichita, Holded Tightly - Apo thonunadhu Un kai aah vida koodadhunu</p>
             <p>Una saree la paakum bothuu Its nothing to say, its perfect(and adhu innoru beautiful moment Namma first time </p>
@@ -2216,10 +2255,10 @@
         <p class="qcard-label">✦ For Maheswari · Chapter III</p>
         <p class="qcard-q">Nee en kaiya pudichirudhapo unnoda feeling _______</p>
         <div class="qcard-options">
-          <button class="qcard-btn" onclick="answerQ(3,'Safe & Warm 🤍')">Safe &amp; Warm 🤍</button>
-          <button class="qcard-btn" onclick="answerQ(3,'Butterflies 🦋')">Butterflies 🦋</button>
-          <button class="qcard-btn" onclick="answerQ(3,'Didn\'t want to let go 💜')">Didn't want to let go 💜</button>
-          <button class="qcard-btn" onclick="answerQ(3,'Just happiness 🌸')">Just happiness 🌸</button>
+          <button class="qcard-btn" onclick="answerQ(3,'Safe & Warm ✦')">Safe &amp; Warm ✦</button>
+          <button class="qcard-btn" onclick="answerQ(3,'Butterflies ✧')">Butterflies ✧</button>
+          <button class="qcard-btn" onclick="answerQ(3,'Didn\'t want to let go ❦')">Didn't want to let go ❦</button>
+          <button class="qcard-btn" onclick="answerQ(3,'Just happiness ✾')">Just happiness ✾</button>
         </div>
         <div class="qcard-answered" id="qans-3"></div>
       </div>
@@ -2253,7 +2292,7 @@
           <p class="chapter-number">Chapter IV · Feb 14, 2024 · Ammu Era</p>
           <div class="chapter-letter">E</div>
           <h2 class="chapter-title">Every Day Felt Like the Beginning of Forever</h2>
-          <span class="chapter-mood">💜 Love Starts · Valentine's · My Ammu</span>
+          <span class="chapter-mood">❦ Love Starts · Valentine's · My Ammu</span>
           <div class="chapter-story">
             <p>This chapter turns Maheswari to My Ammu...</p>
             <p>But indha love starts from oru video call, I think unaku nyabagam irukumnu nenaikuren(Na aniku un kita kiss pannuviya nu ketadhu , nee adhuku oru mari reaction pannitu Aama nu sonnadhu). So lovely moment</p>
@@ -2280,10 +2319,10 @@
         <p class="qcard-label">✦ For Maheswari · Chapter IV</p>
         <p class="qcard-q">Na unaku vechaa nickname ur favourite?</p>
         <div class="qcard-options">
-          <button class="qcard-btn" onclick="answerQ(4,'Bun uh 🍞')">Bun uh 🍞</button>
-          <button class="qcard-btn" onclick="answerQ(4,'Ammu 💜')">Ammu 💜</button>
-          <button class="qcard-btn" onclick="answerQ(4,'kolandha 👶')">kolandha 👶</button>
-          <button class="qcard-btn" onclick="answerQ(4,'Mahi 🌸')">Mahi 🌸</button>
+          <button class="qcard-btn" onclick="answerQ(4,'Bun uh ❃')">Bun uh ❃</button>
+          <button class="qcard-btn" onclick="answerQ(4,'Ammu ❦')">Ammu ❦</button>
+          <button class="qcard-btn" onclick="answerQ(4,'kolandha ✾')">kolandha ✾</button>
+          <button class="qcard-btn" onclick="answerQ(4,'Mahi ✧')">Mahi ✧</button>
         </div>
         <div class="qcard-answered" id="qans-4"></div>
       </div>
@@ -2317,7 +2356,7 @@
           <p class="chapter-number">Chapter V · The Hard Pages · Fights</p>
           <div class="chapter-letter">S</div>
           <h2 class="chapter-title">Storms We Walked Into Without Knowing</h2>
-          <span class="chapter-mood">🌧 Sandai · Breaking Points · Real Love</span>
+          <span class="chapter-mood">✥ Sandai · Breaking Points · Real Love</span>
           <div class="chapter-story">
             <p>Ella page um romba happy ah irukadhu la, Adhe mari namakula neraiya sandaii. Namma endha alavuku love pannomo adhe alavuku neraiya sandaii dha potrukom, But andha sandai elamm ipo nenachaa silly ah iruku.But Enaku over possessives, overcaring, overthinking idhula ennoda mind la unaku na highest priority kudutha But edhu na pannano adhu ennaiya regret panna vechadhuu...</p>
           </div>
@@ -2335,15 +2374,15 @@
         <p class="qcard-label">✦ For Maheswari · Chapter V</p>
         <p class="qcard-q">Unaku na kudutha gifts la</p>
         <div class="qcard-options qcard-gift-grid">
-          <button class="qcard-gift-btn" onclick="answerQ(5,'Butterfly Chain 🦋')">
+          <button class="qcard-gift-btn" onclick="answerQ(5,'Butterfly Chain ✧')">
             <div class="gift-img-box"><img src="M-ui/qns/Butterfly chain.png" alt="Butterfly Chain"></div>
             <span class="gift-label">Butterfly Chain</span>
           </button>
-          <button class="qcard-gift-btn" onclick="answerQ(5,'Ring 💍')">
+          <button class="qcard-gift-btn" onclick="answerQ(5,'Ring ✦')">
             <div class="gift-img-box"><img src="M-ui/qns/RIng.png" alt="Ring"></div>
             <span class="gift-label">Ring</span>
           </button>
-          <button class="qcard-gift-btn" onclick="answerQ(5,'Eye pendant 👁')">
+          <button class="qcard-gift-btn" onclick="answerQ(5,'Eye pendant ✧')">
             <div class="gift-img-box"><img src="M-ui/qns/Eye pendant.jpg" alt="Eye Pendant"></div>
             <span class="gift-label">Eye Pendant</span>
           </button>
@@ -2380,7 +2419,7 @@
           <p class="chapter-number">Chapter VI · The Worst Chapter · Truth</p>
           <div class="chapter-letter">W</div>
           <h2 class="chapter-title">Wounds That Wrote Themselves in Silence</h2>
-          <span class="chapter-mood">🩶 Break Up · My Mistake · Truth</span>
+          <span class="chapter-mood">✥ Break Up · My Mistake · Truth</span>
           <div class="chapter-story">
             <p>And Enaku Un mela suthama nambikaiye illanu nenaikiren, En nee enkita romba open ah irundhum na unaku freedom kuduthadhu kedaiyadhu, Na pannadhu la rombave thappu(Mathavanga private ah pakuradhu)What I did to you is absolutely wrong and Obviously shameful(Shame on me) That ends with broke up ourselves. Idhu namma worst chapter in my life</p>
             <p>Naa unnaiya neraiya Bad words la neraiyaa thitiruken, vulgar ah pesiruken. Ipo nenaikumbothu Oru ponnu kita behave pannadhu enaku romba asingama irukuu. I felt very bad for you</p>
@@ -2400,18 +2439,37 @@
         <p class="qcard-label">✦ For Maheswari · Chapter VI</p>
         <p class="qcard-q">Unaaku enkita irundhu venumna ena solluva?</p>
         <div class="qcard-options">
-          <button class="qcard-btn" onclick="answerQ(6,'Kiss 💋')">Kiss 💋</button>
-          <button class="qcard-btn" onclick="answerQ(6,'Hug 🤗')">Hug 🤗</button>
-          <button class="qcard-btn" onclick="answerQ(6,'Sleep on my lap 🌙')">Sleep on my lap 🌙</button>
+          <button class="qcard-btn" onclick="answerQ(6,'Kiss ❦')">Kiss ❦</button>
+          <button class="qcard-btn" onclick="answerQ(6,'Hug ✦')">Hug ✦</button>
+          <button class="qcard-btn" onclick="answerQ(6,'Sleep on my lap ✥')">Sleep on my lap ✥</button>
         </div>
         <div class="qcard-answered" id="qans-6"></div>
       </div>
     </div>
 
-    </div><!-- /gate-6 -->
+    <div class="divider">
+      <div class="divider-line"></div><span class="divider-symbol">✦</span>
+      <div class="divider-line"></div>
+    </div>
 
-    <!-- GATE 7: Chapter A2 (revealed after Q6) -->
-    <div class="chapter-gate" id="gate-7">
+    <!-- NEW Q7 -->
+    <div class="question-card-wrap gate" id="gate-q7">
+      <div class="question-card qcard" id="qcard-7">
+        <div class="qcard-lock" id="qlock-7">
+          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+        </div>
+        <p class="qcard-label">✦ Question for Maheswari · Reflection</p>
+        <p class="qcard-q">Nee ena vitadhuku oru reason, En nee pesa kooda try pannala, Avlo Verupaa enmela ______</p>
+        <div class="qcard-options" style="display:flex; flex-direction:column; gap:8px;">
+          <textarea id="qans-7-input" class="fi" placeholder="Tell me the truth..." rows="3"></textarea>
+          <button class="qb" onclick="saveTextQ(7)">Save my answer ✦</button>
+        </div>
+        <div class="qcard-answered" id="qans-7"></div>
+      </div>
+    </div>
+
+    <!-- GATE 7: Chapter A2 (revealed after Q7) -->
+    <div class="chapter-gate" id="gate-ch7">
 
     <div class="divider">
       <div class="divider-line"></div><span class="divider-symbol">✦</span>
@@ -2447,28 +2505,26 @@
       </div>
     </section>
 
-    <!-- Q7 -->
-    <div class="question-card-wrap">
-      <div class="question-card qcard" id="qcard-7">
-        <div class="qcard-lock" id="qlock-7">
-          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+    <!-- Q8 (was Q7) -->
+    <div class="question-card-wrap gate" id="gate-8">
+      <div class="question-card qcard" id="qcard-8">
+        <div class="qcard-lock" id="qlock-8">
+          <div class="lock-icon">🔒</div><span>Answer the previous question first</span>
         </div>
         <p class="qcard-label">✦ For Maheswari · Chapter VII</p>
         <p class="qcard-q">Unaku enkita pudicha love language?</p>
         <div class="qcard-options">
-          <button class="qcard-btn" onclick="answerQ(7,'Eye to Eye 👁')">Eye to Eye 👁</button>
-          <button class="qcard-btn" onclick="answerQ(7,'Late night talks 🌙')">Late night talks 🌙</button>
-          <button class="qcard-btn" onclick="answerQ(7,'Romantic chats 💜')">Romantic chats 💜</button>
-          <button class="qcard-btn" onclick="answerQ(7,'Hold my hands 🤝')">Hold my hands 🤝</button>
+          <button class="qcard-btn" onclick="answerQ(8,'Eye to Eye ✧')">Eye to Eye ✧</button>
+          <button class="qcard-btn" onclick="answerQ(8,'Late night talks ✥')">Late night talks ✥</button>
+          <button class="qcard-btn" onclick="answerQ(8,'Romantic chats ❦')">Romantic chats ❦</button>
+          <button class="qcard-btn" onclick="answerQ(8,'Hold my hands ✦')">Hold my hands ✦</button>
         </div>
-        <div class="qcard-answered" id="qans-7"></div>
+        <div class="qcard-answered" id="qans-8"></div>
       </div>
     </div>
 
-    </div><!-- /gate-7 -->
-
-    <!-- GATE 8: Chapter R (revealed after Q7) -->
-    <div class="chapter-gate" id="gate-8">
+    <!-- GATE 8: Chapter R (revealed after Q8) -->
+    <div class="chapter-gate" id="gate-ch8">
 
     <div class="divider">
       <div class="divider-line"></div><span class="divider-symbol">✦</span>
@@ -2493,7 +2549,7 @@
           <p class="chapter-number">Chapter VIII · Back Again · Shock</p>
           <div class="chapter-letter">R</div>
           <h2 class="chapter-title">Returning to Where I Always Belonged</h2>
-          <span class="chapter-mood">✨ Universe · Reconnect · Grateful</span>
+          <span class="chapter-mood">✦ Universe · Reconnect · Grateful</span>
           <div class="chapter-story">
             <p>Namma thirumba pesa thotangunadhum again chat la dha, But nee normal la again pesunadhu romba shock. How?</p>
             <p>Indha universe la namaku kedaikumnu irundha andha kandipaa kedaikum, By the way nee enakava illa, anyway unakum enaiya pudikala as a love.. we could be great when we friends, or even my crush. Enooda Heart la idhuku melaa yarakum kuduka poradhila That is what im giving respect to you... So I'm not going to love anymore.. Nee unnoda vazhkiyaa Nalla vazhanum, sirchitute irukanum. Thats enough for me</p>
@@ -2503,26 +2559,24 @@
       </div>
     </section>
 
-    <!-- Q8 -->
-    <div class="question-card-wrap">
-      <div class="question-card qcard" id="qcard-8">
-        <div class="qcard-lock" id="qlock-8">
-          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+    <!-- Q9 (was Q8) -->
+    <div class="question-card-wrap gate" id="gate-9">
+      <div class="question-card qcard" id="qcard-9">
+        <div class="qcard-lock" id="qlock-9">
+          <div class="lock-icon">🔒</div><span>Answer the previous question first</span>
         </div>
         <p class="qcard-label">✦ For Maheswari · Chapter VIII</p>
         <p class="qcard-q">Nee nejamalume enaiya love paaniya andha time la?</p>
         <div class="qcard-options">
-          <button class="qcard-btn" onclick="answerQ(8,'yes 💜')">yes 💜</button>
-          <button class="qcard-btn" onclick="answerQ(8,'No 🙈')">No 🙈</button>
+          <button class="qcard-btn" onclick="answerQ(9,'yes ❦')">yes ❦</button>
+          <button class="qcard-btn" onclick="answerQ(9,'No ✧')">No ✧</button>
         </div>
-        <div class="qcard-answered" id="qans-8"></div>
+        <div class="qcard-answered" id="qans-9"></div>
       </div>
     </div>
 
-    </div><!-- /gate-8 -->
-
-    <!-- GATE 9: Chapter I (revealed after Q8) -->
-    <div class="chapter-gate" id="gate-9">
+    <!-- GATE 9: Chapter I (revealed after Q9) -->
+    <div class="chapter-gate" id="gate-ch9">
 
     <div class="divider">
       <div class="divider-line"></div><span class="divider-symbol">✦</span>
@@ -2547,7 +2601,7 @@
           <p class="chapter-number">Chapter IX · Always · Forever</p>
           <div class="chapter-letter">I</div>
           <h2 class="chapter-title">Infinity — Because Some Stories Don't End</h2>
-          <span class="chapter-mood">♾ Forever · Respect · Always You</span>
+          <span class="chapter-mood">∞ Forever · Respect · Always You</span>
           <div class="chapter-story">
             <p>If I failed as a friend I'm sorry,</p>
             <p>If I failed as a Boyfriend I'm sorry</p>
@@ -2565,14 +2619,20 @@
       </div>
     </section>
 
+    <!-- Q9 -->
+    <div class="question-card-wrap">
+      <div class="question-card qcard" id="qcard-9">
+        <div class="qcard-lock" id="qlock-9">
+          <div class="lock-icon">🔒</div><span>Read the chapter first</span>
+        </div>
+        <p class="qcard-label">✦ For Maheswari · Chapter IX</p>
         <p class="qcard-q">Indha story padichathum — un manasula enna feel aagudu?</p>
         <div class="qcard-options">
-          <button class="qcard-btn" onclick="answerQ(9,'Crying & Happy both 🥹')">Crying &amp; Happy both 🥹</button>
-          <button class="qcard-btn" onclick="answerQ(9,'So many memories hit at once 💜')">So many memories hit at once
-  💜</button>
-          <button class="qcard-btn" onclick="answerQ(9,'Overwhelmed 🌸')">Overwhelmed 🌸</button>
+          <button class="qcard-btn" onclick="answerQ(9,'Crying &amp; Happy both ✧')">Crying &amp; Happy both ✧</button>
+          <button class="qcard-btn" onclick="answerQ(9,'So many memories hit at once ❦')">So many memories hit at once ❦</button>
+          <button class="qcard-btn" onclick="answerQ(9,'Overwhelmed ✾')">Overwhelmed ✾</button>
         </div>
-        <div class="qcard-answered" id="qans-11"></div>
+        <div class="qcard-answered" id="qans-9"></div>
       </div>
     </div>
 
@@ -2580,6 +2640,23 @@
 
     <!-- GATE EPILOGUE (revealed after Q9) -->
     <div class="chapter-gate" id="gate-epilogue">
+
+    <!-- Q10 (was Q9) -->
+    <div class="question-card-wrap gate" id="gate-epilogue">
+      <div class="question-card qcard" id="qcard-10">
+        <div class="qcard-lock" id="qlock-10">
+          <div class="lock-icon">🔒</div><span>Finish hearing the story first</span>
+        </div>
+        <p class="qcard-label">✦ Final Question for Maheswari · Chapter IX</p>
+        <p class="qcard-q">Indha story padichathum — un manasula enna feel aagudu?</p>
+        <div class="qcard-options">
+          <button class="qcard-btn" onclick="answerQ(10,'Crying & Happy both ✧')">Crying &amp; Happy both ✧</button>
+          <button class="qcard-btn" onclick="answerQ(10,'So many memories hit at once ❦')">So many memories hit at once ❦</button>
+          <button class="qcard-btn" onclick="answerQ(10,'Overwhelmed ✾')">Overwhelmed ✾</button>
+        </div>
+        <div class="qcard-answered" id="qans-10"></div>
+      </div>
+    </div>
 
     <!-- GALLERY -->
     <section id="gallery">
@@ -2599,7 +2676,7 @@
     <!-- EPILOGUE -->
     <section id="epilogue">
       <div class="epilogue-glow"></div>
-      <h2 class="epilogue-title reveal">Happy Birthday, Maheswari 🌸</h2>
+      <h2 class="epilogue-title reveal">Happy Birthday, Maheswari ✾</h2>
       <p class="epilogue-text reveal">
         M irundhu I varaiku — nine letters, nine chapters,<br>oru payanam ellam unnoda.<br><br>
         <em>Nee Maheswari ah irundhaa — My Ammu ah maari,</em><br>
@@ -2607,7 +2684,7 @@
         Nee sirichitue irukanum. Nee nalla vazhanum.<br>
         <em>Adhu mattum thaan — always enough for me.</em><br><br>
         I still love you, quietly, deeply, endlessly.<br>
-        <em>Some love stories don't need an ending —<br>they just become infinity. 💫</em>
+        <em>Some love stories don't need an ending —<br>they just become infinity. ✧</em>
       </p>
       <p class="epilogue-names reveal">
         From Vishnu — with everything <span class="heart-beat">♥</span> Always
@@ -2673,62 +2750,128 @@
   </div>
 
   <script>
-    // ===== LOCK & FEEDBACK LOGIC =====
+    // ===== SITE ENTRANCE (Synchronized with Archives - Mobile) =====
     let currentPass = '';
-    const correctPass = '1204'; // Default birthday passcode
+    const correctPass = '2211';
+
+    function openDoors() {
+      document.getElementById('door-layer').classList.add('open');
+      setTimeout(() => {
+        document.getElementById('lock-layer').classList.remove('hidden');
+      }, 1000);
+    }
 
     function dial(val) {
       const dots = document.querySelectorAll('#pass-display .dot');
-      const err = document.getElementById('lock-err');
-      
       if (val === 'clear') {
         currentPass = '';
       } else if (val === 'del') {
         currentPass = currentPass.slice(0, -1);
       } else if (val === 'verify') {
         if (currentPass.length === 4) {
-          if (currentPass === correctPass) {
-            unlockSite();
-          } else {
-            triggerError();
-          }
-        } else {
-          triggerError();
-        }
+          if (currentPass === correctPass) unlockVault();
+          else triggerError();
+        } else triggerError();
         return;
       } else if (currentPass.length < 4) {
         currentPass += val;
       }
 
-      // Update dots
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i < currentPass.length);
-      });
+      dots.forEach((dot, i) => dot.classList.toggle('active', i < currentPass.length));
+      if (currentPass.length === 4 && val !== 'verify') {
+        setTimeout(() => dial('verify'), 300);
+      }
     }
 
+    // Keyboard support for mobile external keyboards
+    window.addEventListener('keydown', e => {
+      if (document.getElementById('lock-layer').classList.contains('hidden')) return;
+      if (e.key >= '0' && e.key <= '9') dial(e.key);
+      if (e.key === 'Backspace') dial('del');
+      if (e.key === 'Enter') dial('verify');
+    });
+
     function triggerError() {
-      const err = document.getElementById('lock-err');
       const dots = document.querySelectorAll('#pass-display .dot');
-      err.classList.add('visible');
       document.getElementById('pass-display').classList.add('shake');
+      document.getElementById('lock-err').classList.add('visible');
       setTimeout(() => {
         currentPass = '';
         dots.forEach(dot => dot.classList.remove('active'));
-        err.classList.remove('visible');
         document.getElementById('pass-display').classList.remove('shake');
+        document.getElementById('lock-err').classList.remove('visible');
       }, 800);
     }
 
-    function unlockSite() {
-      const lock = document.getElementById('lock-gate');
-      const entry = document.getElementById('entry-page');
-      lock.style.opacity = '0';
-      setTimeout(() => {
-        lock.classList.add('hidden');
-        entry.classList.remove('hidden');
-        // Trigger shimmering messages sequence if needed
-      }, 1000);
+    function unlockVault() {
+      document.getElementById('lock-layer').classList.add('hidden');
+      const msgLayer = document.getElementById('msg-layer');
+      msgLayer.classList.add('active');
+      
+      const txt = document.getElementById('welcome-text');
+      const hint = document.getElementById('hint-text');
+      
+      const messages = [
+        "Oru chinna surprise iruku... ❃",
+        "I wish to give this to you at the last birthday, but I couldn't because we were lost in the silence of our own wounds. ❦",
+        "I wanted to reach out, but the words were stuck in my throat, and the distance felt like an ocean we couldn't cross. ✧",
+        "But today, I'm bringing back every memory, every whisper, and every moment we shared. ❂",
+        "This isn't just a website; it's the heartbeat of our story that never stopped beating for you. ❃",
+        "Happy Birthday, Maheswari ✾ ✦"
+      ];
+      
+      let step = 0;
+      const interval = setInterval(() => {
+        txt.classList.remove('show');
+        setTimeout(() => {
+          if (step < messages.length) {
+            txt.textContent = messages[step];
+            txt.classList.add('show');
+            step++;
+          } else {
+            clearInterval(interval);
+            hint.classList.add('show');
+            setTimeout(revealSite, 2000);
+          }
+        }, 800);
+      }, 3000);
+      
+      if (!mPlaying) toggleMusic();
     }
+
+    function revealSite() {
+      const main = document.getElementById('main-site');
+      main.style.display = 'block';
+      document.body.style.overflow = '';
+      
+      setTimeout(() => {
+        document.getElementById('msg-layer').style.opacity = '0';
+        main.style.visibility = 'visible';
+        main.style.opacity = '1';
+        main.style.transition = 'opacity 2.5s cubic-bezier(0.16, 1, 0.3, 1)';
+      }, 100);
+
+      setTimeout(() => {
+        const layers = ['msg-layer', 'lock-layer', 'door-layer'];
+        layers.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.remove();
+        });
+      }, 3000);
+    }
+
+    // Legacy support
+    function enterSite() { revealSite(); }
+
+    // ===== CHAPTER LETTER POP (IntersectionObserver) =====
+    const letterObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelector('.chapter-letter-bg')?.classList.add('pop-in');
+        }
+      });
+    }, { threshold: 0.35 });
+    document.querySelectorAll('.chapter').forEach(ch => letterObs.observe(ch));
 
     // Feedback logic
     let userRating = 0;
@@ -2781,8 +2924,15 @@
     }
 
     function submitFeedback() {
-      alert("Thank you Maheswari! Your feelings have been woven into the story forever. ❤️");
-      // In a real app, this would send to an API.
+      const fbData = {
+        rating: userRating,
+        gift: document.getElementById('q-gift').value.trim(),
+        design: document.getElementById('q-design').value.trim(),
+        feeling: document.getElementById('feed-text').value.trim(),
+        timestamp: new Date().toISOString()
+      };
+      localStorage.setItem('mahiFeedback', JSON.stringify(fbData));
+      alert("Thank you Maheswari! Your feelings have been woven into the story forever. ❦");
     }
 
     // Existing Stars Canvas Logic
@@ -2824,7 +2974,12 @@
     let mPlaying=false,mIdx=0,mAudio=null;
     function toggleMusic(){
       mPlaying=!mPlaying;
-      document.getElementById('mplay').textContent=mPlaying?'⏸':'▶';
+      const btn = document.getElementById('mplay');
+      if (mPlaying) {
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+      } else {
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"></path></svg>`;
+      }
       document.getElementById('mdisc').classList.toggle('paused',!mPlaying);
       document.getElementById('mwaves').classList.toggle('paused',!mPlaying);
       if (mPlaying) {
@@ -2855,19 +3010,7 @@
       }
     }
 
-    // ===== ENTRY =====
-    setTimeout(() => document.getElementById('sl1').classList.add('visible'), 700);
-    setTimeout(() => document.getElementById('sl2').classList.add('visible'), 1600);
-    setTimeout(() => document.getElementById('sl3').classList.add('visible'), 2500);
-    setTimeout(() => document.getElementById('sl4').classList.add('visible'), 3300);
-    function enterSite() {
-      document.getElementById('entry-page').classList.add('hidden');
-      const m = document.getElementById('main-site');
-      m.style.display = 'block';
-      setTimeout(() => m.classList.add('visible'), 100);
-      // Automatically start music on entry
-      if (!mPlaying) toggleMusic();
-    }
+    // (Sequence handled by unlockVault above)
 
 
 
@@ -2877,43 +3020,68 @@
     // Save always overwrites — latest answer is stored
     function saveA(q, a) { const d = loadA(); d[q] = a; localStorage.setItem(AK, JSON.stringify(d)); }
 
-    // Gate mapping: answering Q(n) reveals gate-(n+1)
-    // Q1→gate-2, Q2→gate-3, Q3→gate-4, Q4→gate-5, Q5→gate-6
-    // Q6→gate-7, Q7→gate-8, Q8→gate-9, Q9→gate-epilogue
-    const gateMap = { 1:'gate-2', 2:'gate-3', 3:'gate-4', 4:'gate-5', 5:'gate-6',
-                      6:'gate-7', 7:'gate-8', 8:'gate-9', 9:'gate-epilogue' };
+    // Gate mapping: answering Q(n) reveals the next gate
+    const gateMap = { 
+      1:'gate-2', 2:'gate-3', 3:'gate-4', 4:'gate-5', 5:'gate-6',
+      6:'gate-q7', 7:'gate-ch7', 8:'gate-ch8', 9:'gate-ch9', 10:'gate-epilogue' 
+    };
 
     function answerQ(qNum, answer) {
       const card = document.getElementById('qcard-' + qNum);
       const ansEl = document.getElementById('qans-' + qNum);
       if (!card) return;
-      // Allow re-answering: remove done class temporarily
       card.querySelectorAll('button').forEach(b => b.classList.add('disabled'));
       card.classList.add('done');
       ansEl.innerHTML = '✦ &nbsp;' + answer + '&nbsp; ✦';
-      saveA('Q' + qNum, answer); // Latest answer always stored
+      saveA('Q' + qNum, answer);
 
-      // Unlock the next question card's lock overlay
       const nextLock = document.getElementById('qlock-' + (qNum + 1));
       if (nextLock) setTimeout(() => nextLock.classList.add('unlocked'), 600);
 
-      // Reveal the next chapter gate with animation
       const gateId = gateMap[qNum];
       if (gateId) {
         const gate = document.getElementById(gateId);
         if (gate && gate.style.display !== 'block') {
           gate.style.display = 'block';
-          // Trigger reflow for animation
           gate.offsetHeight;
           gate.classList.add('visible');
           gate.style.animation = 'gateReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both';
           setTimeout(() => gate.scrollIntoView({ behavior: 'smooth', block: 'start' }), 700);
         }
       }
+    }
 
-      // Auto-open overlay when all 9 answered
+    function saveTextQ(qNum) {
+      const input = document.getElementById('qans-' + qNum + '-input');
+      const val = input.value.trim();
+      if (!val) { alert("Please share your heart ❦"); return; }
+      
+      const card = document.getElementById('qcard-' + qNum);
+      const ansEl = document.getElementById('qans-' + qNum);
+      input.disabled = true;
+      card.querySelector('button').classList.add('disabled');
+      ansEl.innerHTML = '✦ &nbsp;' + val + '&nbsp; ✦';
+      card.classList.add('done');
+      saveA('Q' + qNum, val);
+
+      const nextLock = document.getElementById('qlock-' + (qNum + 1));
+      if (nextLock) setTimeout(() => nextLock.classList.add('unlocked'), 600);
+      const gateId = gateMap[qNum];
+      if (gateId) {
+        const gate = document.getElementById(gateId);
+        if (gate && gate.style.display !== 'block') {
+          gate.style.display = 'block';
+          gate.offsetHeight;
+          gate.classList.add('visible');
+          gate.style.animation = 'gateReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both';
+          setTimeout(() => gate.scrollIntoView({ behavior: 'smooth', block: 'start' }), 700);
+        }
+      }
+    }
+
+      // Auto-open overlay when all 10 answered
       const d = loadA();
-      if (Object.keys(d).length >= 9) {
+      if (Object.keys(d).length >= 10) {
         setTimeout(() => openAnswersOverlay(), 1200);
       }
     }
@@ -2926,6 +3094,7 @@
       'Favourite nickname',
       'Favourite gift from him',
       'What she wants from him',
+      'The reason for our silence ❦',
       'Favourite love language',
       'Did she really love him?',
       'Feeling after reading this story'
@@ -2935,7 +3104,7 @@
       const d = loadA();
       const container = document.getElementById('overlay-cards');
       container.innerHTML = '';
-      for (let i = 1; i <= 9; i++) {
+      for (let i = 1; i <= 10; i++) {
         const card = document.createElement('div');
         card.className = 'ans-card';
         card.style.animationDelay = (i * 0.08) + 's';
@@ -2961,7 +3130,7 @@
     function restoreAnswers() {
       const d = loadA();
       // Restore answered state on cards
-      for (let i = 1; i <= 9; i++) {
+      for (let i = 1; i <= 10; i++) {
         if (d['Q' + i]) {
           const card = document.getElementById('qcard-' + i);
           const ansEl = document.getElementById('qans-' + i);
@@ -3078,6 +3247,57 @@
     buildGallery();
 
     window.addEventListener('load', () => { restoreAnswers(); });
+
+    // ===== AI VOICE STORY READER =====
+    let synth = window.speechSynthesis;
+    let isSpeaking = false;
+
+    function toggleVoiceRead() {
+      if (isSpeaking) {
+        if(synth) synth.cancel();
+        stopSpeaking();
+        return;
+      }
+      startSpeaking();
+    }
+
+    function startSpeaking() {
+      isSpeaking = true;
+      document.getElementById('voice-fab')?.classList.add('speaking');
+      document.getElementById('ai-status')?.classList.add('active');
+
+      let textToRead = "Chronicle access granted. Reading the story of Maheswari. ";
+      
+      const stories = document.querySelectorAll('.chapter');
+      stories.forEach(s => {
+        const title = s.querySelector('.chapter-title')?.textContent || "";
+        const story = s.querySelector('.chapter-story')?.innerText || "";
+        const quote = s.querySelector('.chapter-quote')?.textContent || "";
+        if(title) textToRead += ` Chapter: ${title}. `;
+        if(story) textToRead += `${story}. `;
+        if(quote) textToRead += ` Thought: ${quote}. `;
+      });
+
+      const utter = new SpeechSynthesisUtterance(textToRead);
+      utter.rate = 0.95;
+      utter.pitch = 1.05;
+      
+      const voices = synth.getVoices();
+      const preferred = voices.find(v => v.name.includes('Google UK English Female') || v.name.includes('Female') || v.lang === 'en-GB');
+      if(preferred) utter.voice = preferred;
+
+      utter.onend = stopSpeaking;
+      synth.speak(utter);
+    }
+
+    function stopSpeaking() {
+      isSpeaking = false;
+      document.getElementById('voice-fab')?.classList.remove('speaking');
+      document.getElementById('ai-status')?.classList.remove('active');
+    }
+
+    // Initialize voices
+    window.speechSynthesis.getVoices();
   </script>
 </body>
 
